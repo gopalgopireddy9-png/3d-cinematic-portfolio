@@ -248,7 +248,7 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
   font-family:'JetBrains Mono',monospace;font-weight:700;
 }
 .portal-vid-wrap{
-  position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;
+  position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;cursor:pointer;
 }
 .portal-vid-wrap video{
   width:100%;height:100%;object-fit:cover;display:block;
@@ -257,6 +257,27 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
   position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(circle at 50% 50%,transparent 60%,rgba(0,0,0,0.4) 100%);
   border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.vid-play-overlay{
+  position:absolute;inset:0;background:rgba(5,9,18,0.65);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;cursor:pointer;z-index:5;transition:opacity 0.3s ease,visibility 0.3s ease;
+  backdrop-filter:blur(3px);
+}
+.vid-play-overlay.hidden{
+  opacity:0;visibility:hidden;pointer-events:none;
+}
+.play-pulse-circle{
+  width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--or),#ffb36b);
+  color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;
+  box-shadow:0 0 25px rgba(255,138,61,0.65);transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+.vid-play-overlay:hover .play-pulse-circle{
+  transform:scale(1.12);box-shadow:0 0 35px rgba(255,138,61,0.9);
+}
+.vid-play-overlay span{
+  font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.18em;
+  color:#fff;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,0.85);
 }
 .portal-ctrls{
   padding:12px 16px;background:rgba(5,9,18,0.95);display:flex;flex-wrap:wrap;
@@ -584,20 +605,29 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
           <span class="badge">4K CINEMATIC REEL</span>
         </div>
 
-        <div class="portal-vid-wrap">
-          <video id="hero-flow-video" src="assets/cinematic_person.mp4" autoplay loop muted playsinline></video>
+        <div class="portal-vid-wrap" id="portal-vid-container" title="Click to play / pause video">
+          <video id="hero-flow-video" preload="auto" autoplay loop muted playsinline webkit-playsinline>
+            <source src="assets/cinematic_person.mp4" type="video/mp4">
+            <source src="portfolio/assets/cinematic_person.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
           <div class="portal-overlay"></div>
+          <!-- Click to play overlay -->
+          <div id="vid-play-overlay" class="vid-play-overlay">
+            <div class="play-pulse-circle">▶</div>
+            <span>CLICK TO PLAY 4K AI REEL</span>
+          </div>
         </div>
 
         <div class="portal-ctrls">
           <div style="display:flex; gap:8px;">
-            <button id="vid-play-btn" class="vid-btn">⏸ PAUSE</button>
+            <button id="vid-play-btn" class="vid-btn">▶ PLAY</button>
             <button id="vid-sound-btn" class="vid-btn">🔇 UNMUTE</button>
             <button id="vid-cinema-btn" class="vid-btn" style="border-color:var(--or); color:var(--or);">⛶ THEATER</button>
           </div>
-          <div class="portal-status">
-            <span>SOC TELEMETRY:</span>
-            <b>STREAMING LIVE</b>
+          <div class="portal-status" id="video-status-indicator">
+            <span>VIDEO:</span>
+            <b id="vid-status-text" style="color:var(--or);">PAUSED (CLICK TO PLAY)</b>
           </div>
         </div>
       </div>
@@ -1210,6 +1240,7 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
       clearTimeout(introTimer);
       introEl.classList.add('out');
       playTone(440, 0.15, 'sine');
+      tryPlayVideo();
     });
   }
 
@@ -1231,6 +1262,9 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
   var vidSoundBtn = document.getElementById('vid-sound-btn');
   var vidCinemaBtn = document.getElementById('vid-cinema-btn');
   var heroFocusBtn = document.getElementById('hero-focus-btn');
+  var vidPlayOverlay = document.getElementById('vid-play-overlay');
+  var vidStatusText = document.getElementById('vid-status-text');
+  var vidContainer = document.getElementById('portal-vid-container');
   var tourBtn = document.getElementById('tour-btn');
   var orbitBtn = document.getElementById('orbit-btn');
   var soundBtn = document.getElementById('sound-btn');
@@ -1242,6 +1276,39 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
   var projModal = document.getElementById('proj-modal');
   var projModalContent = document.getElementById('proj-modal-content');
   var projModalClose = document.getElementById('proj-modal-close');
+
+  // Video State Manager
+  function updateVideoState(isPlaying) {
+    if (vidPlayBtn) {
+      vidPlayBtn.textContent = isPlaying ? '⏸ PAUSE' : '▶ PLAY';
+    }
+    if (vidPlayOverlay) {
+      if (isPlaying) {
+        vidPlayOverlay.classList.add('hidden');
+      } else {
+        vidPlayOverlay.classList.remove('hidden');
+      }
+    }
+    if (vidStatusText) {
+      vidStatusText.textContent = isPlaying ? 'PLAYING (4K REEL)' : 'PAUSED (CLICK TO PLAY)';
+      vidStatusText.style.color = isPlaying ? 'var(--gr)' : 'var(--or)';
+    }
+  }
+
+  function tryPlayVideo() {
+    if (!heroVid) return;
+    heroVid.muted = true;
+    heroVid.playsInline = true;
+    var p = heroVid.play();
+    if (p !== undefined) {
+      p.then(function(){
+        updateVideoState(true);
+      }).catch(function(err){
+        console.log("Auto-playback waiting for user gesture:", err);
+        updateVideoState(false);
+      });
+    }
+  }
 
   // 4. Procedural Web Audio Engine (Ambience + Laser Blips)
   var audioCtx = null;
@@ -1304,36 +1371,82 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
     });
   }
 
-  // 5. Video Controls
-  if (heroVid && vidPlayBtn) {
-    vidPlayBtn.addEventListener('click', function(){
-      if (heroVid.paused) {
-        heroVid.play();
-        vidPlayBtn.textContent = '⏸ PAUSE';
-      } else {
-        heroVid.pause();
-        vidPlayBtn.textContent = '▶ PLAY';
+  // 5. Video Controls & Event Hooks
+  if (heroVid) {
+    heroVid.addEventListener('play', function(){ updateVideoState(true); });
+    heroVid.addEventListener('pause', function(){ updateVideoState(false); });
+    heroVid.addEventListener('playing', function(){ updateVideoState(true); });
+    heroVid.addEventListener('error', function(e){
+      console.warn("Video element status:", e);
+      if (vidStatusText) {
+        vidStatusText.textContent = 'LOCAL FILE READY (CLICK TO PLAY)';
+        vidStatusText.style.color = 'var(--or)';
       }
-      playTone(660, 0.08);
     });
-  }
-  if (heroVid && vidSoundBtn) {
-    vidSoundBtn.addEventListener('click', function(){
-      heroVid.muted = !heroVid.muted;
-      vidSoundBtn.textContent = heroVid.muted ? '🔇 UNMUTE' : '🔊 MUTE';
-      vidSoundBtn.classList.toggle('active', !heroVid.muted);
-      playTone(740, 0.08);
-    });
-  }
-  if (heroVid && vidCinemaBtn) {
-    vidCinemaBtn.addEventListener('click', function(){
-      if (heroVid.requestFullscreen) {
-        heroVid.requestFullscreen();
-      } else if (heroVid.webkitRequestFullscreen) {
-        heroVid.webkitRequestFullscreen();
+
+    if (vidPlayBtn) {
+      vidPlayBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        if (heroVid.paused) {
+          tryPlayVideo();
+        } else {
+          heroVid.pause();
+        }
+        playTone(660, 0.08);
+      });
+    }
+
+    if (vidPlayOverlay) {
+      vidPlayOverlay.addEventListener('click', function(e){
+        e.stopPropagation();
+        tryPlayVideo();
+        playTone(660, 0.08);
+      });
+    }
+
+    if (vidContainer) {
+      vidContainer.addEventListener('click', function(e){
+        if (e.target !== vidPlayOverlay && !e.target.closest('#vid-play-overlay')) {
+          if (heroVid.paused) {
+            tryPlayVideo();
+          } else {
+            heroVid.pause();
+          }
+          playTone(660, 0.08);
+        }
+      });
+    }
+
+    if (vidSoundBtn) {
+      vidSoundBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        heroVid.muted = !heroVid.muted;
+        vidSoundBtn.textContent = heroVid.muted ? '🔇 UNMUTE' : '🔊 MUTE';
+        vidSoundBtn.classList.toggle('active', !heroVid.muted);
+        playTone(740, 0.08);
+      });
+    }
+
+    if (vidCinemaBtn) {
+      vidCinemaBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        if (heroVid.requestFullscreen) {
+          heroVid.requestFullscreen();
+        } else if (heroVid.webkitRequestFullscreen) {
+          heroVid.webkitRequestFullscreen();
+        }
+        playTone(880, 0.1);
+      });
+    }
+
+    // Auto-attempt playback across lifecycle
+    tryPlayVideo();
+    window.addEventListener('load', tryPlayVideo);
+    document.addEventListener('click', function(){
+      if (heroVid && heroVid.paused) {
+        tryPlayVideo();
       }
-      playTone(880, 0.1);
-    });
+    }, { once: false });
   }
 
   // 6. Three.js 3D WebGL World
@@ -1566,9 +1679,16 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
     c.textAlign = 'left';
   }, false);
 
-  // Hook Google Flow Video onto Central Hologram Screen
+  // Hook Google Flow Video onto Central Hologram Screen (with CORS & protocol resilience)
   function bindVideoToHolo() {
     if (!heroVid || !centerHoloMesh) return;
+    // On file:// protocol, Chromium strictly blocks WebGL texImage2D from local videos
+    var isHttp = window.location.protocol.startsWith('http');
+    if (!isHttp) {
+      console.log("file:// protocol: displaying animated procedural SOC & SIEM telemetry canvas on 3D hologram screen.");
+      isVideoHoloActive = false;
+      return;
+    }
     try {
       if (!videoTexture) {
         videoTexture = new T.VideoTexture(heroVid);
@@ -1581,12 +1701,16 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
       isVideoHoloActive = true;
     } catch(e) {
       console.warn("Video texture fallback to procedural canvas:", e);
+      isVideoHoloActive = false;
     }
   }
 
   if (heroVid) {
-    heroVid.addEventListener('play', bindVideoToHolo);
-    bindVideoToHolo();
+    heroVid.addEventListener('play', function(){
+      if (window.location.protocol.startsWith('http')) {
+        bindVideoToHolo();
+      }
+    });
   }
 
   // Floating Ambient Data Dust Particles
@@ -1751,7 +1875,16 @@ p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0
 
     try {
       r.render(s, cam);
-    } catch(err){}
+    } catch(err){
+      if (isVideoHoloActive) {
+        console.warn("WebGL VideoTexture security block detected on file://. Reverting to procedural canvas:", err);
+        isVideoHoloActive = false;
+        if (centerHoloMesh && centerHoloMesh.userData && centerHoloMesh.userData.tx) {
+          centerHoloMesh.material.map = centerHoloMesh.userData.tx;
+          centerHoloMesh.material.needsUpdate = true;
+        }
+      }
+    }
 
     pg.style.width = (smoothProg * 100) + '%';
     var mid = window.innerHeight * 0.5;
