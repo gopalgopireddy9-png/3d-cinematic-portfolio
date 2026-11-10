@@ -1,2162 +1,1001 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gopireddy Gopal · 3D Cinematic Portfolio | Data Analyst & SOC Analyst</title>
-<meta name="description" content="3D Cinematic WebGL Portfolio of Gopireddy Gopal - Data Analyst & SOC Analyst specializing in Power BI, SQL, Python, SIEM Log Analysis (Splunk, Elastic), Threat Hunting, and Incident Response, featuring Google Flow cinematic AI video integration.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  color-scheme:dark;
-  --bg:#05080e;
-  --bg-card:rgba(8,13,22,0.78);
-  --bg-glass:rgba(10,16,28,0.65);
-  --fg:#eef1f6;
-  --mut:#9aa6b8;
-  --or:#ff8a3d;
-  --tl:#2de2e6;
-  --pu:#a855f7;
-  --gr:#10b981;
-  --rd:#ef4444;
-  --line:rgba(238,241,246,0.14);
-  --line-hl:rgba(45,226,230,0.4);
-  box-sizing:border-box;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--fg);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  overflow-x:hidden;
-  line-height:1.6;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopireddy Gopal | 3D Cinematic Portfolio | Data &amp; Blue Team SOC Analyst</title>
+    
+    <!-- Meta tags for professional sharing -->
+    <meta name="description" content="Cinematic 3D Animated Portfolio of Gopireddy Gopal - Data Analyst & Blue Team SOC Analyst specializing in Power BI, SQL, Python, SIEM (Splunk, Wazuh), Sigma Rules, and Threat Hunting.">
+    <meta name="author" content="Gopireddy Gopal">
 
-/* 3D WebGL Canvas Layer */
-#c{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-/* Cinematic Film Overlays */
-.vig{
-  position:fixed;inset:0;z-index:3;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 50%,transparent 45%,rgba(0,0,0,0.85) 100%);
-}
-.grain{
-  position:fixed;inset:-50%;z-index:4;pointer-events:none;opacity:.06;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation:g .6s steps(6) infinite;
-}
-@keyframes g{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
-
-/* Cinematic Scanlines */
-.scanlines{
-  position:fixed;inset:0;z-index:4;pointer-events:none;opacity:.03;
-  background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.25) 50%);
-  background-size:100% 4px;
-}
-
-/* Cinematic Letterbox Bars */
-.bar{
-  position:fixed;left:0;right:0;z-index:10;background:#000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 4vw;font-size:11px;letter-spacing:.2em;font-weight:600;color:var(--mut);
-  transition:height 0.4s ease;
-}
-.bar.t{
-  top:0;height:calc(6vh + env(safe-area-inset-top,0px));
-  padding-top:env(safe-area-inset-top,0px);
-  border-bottom:1px solid rgba(255,255,255,0.06);
-}
-.bar.b{
-  bottom:0;height:calc(5.5vh + env(safe-area-inset-bottom,0px));
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  border-top:1px solid rgba(255,255,255,0.06);
-}
-.bar .brand{
-  display:flex;align-items:center;gap:10px;color:var(--fg);
-  text-decoration:none;font-weight:800;letter-spacing:.15em;
-}
-.bar .brand span{color:var(--tl)}
-.brand-dot{
-  width:8px;height:8px;background:var(--tl);border-radius:50%;
-  box-shadow:0 0 10px var(--tl);animation:pulse 2s infinite;
-}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.5}}
-
-.bar nav a{
-  color:var(--mut);text-decoration:none;margin-left:22px;
-  font-size:11px;font-weight:600;letter-spacing:.18em;transition:.25s;
-}
-.bar nav a:hover,.bar nav a.active{color:var(--tl)}
-.bar b{color:var(--fg)}
-.bar i{color:var(--tl);font-style:normal;font-family:'JetBrains Mono',monospace}
-
-/* Quick Control Action Buttons in Header */
-.header-actions{display:flex;align-items:center;gap:10px}
-.hdr-btn{
-  background:rgba(10,16,26,0.8);color:var(--fg);border:1px solid var(--line);
-  padding:6px 14px;border-radius:999px;font-size:10px;letter-spacing:.15em;
-  font-weight:700;cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:6px;
-  text-decoration:none;
-}
-.hdr-btn:hover{
-  border-color:var(--tl);color:var(--tl);box-shadow:0 0 15px rgba(45,226,230,0.3);
-  transform:translateY(-1px);
-}
-.hdr-btn.accent{
-  background:linear-gradient(90deg,rgba(255,138,61,0.2),rgba(255,179,107,0.3));
-  border-color:var(--or);color:var(--or);
-}
-.hdr-btn.accent:hover{box-shadow:0 0 18px rgba(255,138,61,0.4)}
-.hdr-btn.flow{
-  background:rgba(245,158,11,0.15);border-color:#f59e0b;color:#fbbf24;
-}
-.hdr-btn.flow:hover{box-shadow:0 0 18px rgba(245,158,11,0.4)}
-
-/* Progress bar */
-#prog{
-  position:fixed;left:0;bottom:calc(5.5vh + env(safe-area-inset-bottom,0px));
-  height:2px;width:0;background:linear-gradient(90deg,var(--or),var(--tl));z-index:11;
-  transition:width 0.1s ease-out;
-}
-
-/* Movie Tour Subtitle HUD */
-#subtitle-hud{
-  position:fixed;bottom:calc(7.5vh + env(safe-area-inset-bottom,0px));left:50%;
-  transform:translateX(-50%);z-index:12;background:rgba(5,8,14,0.88);
-  border:1px solid var(--line-hl);backdrop-filter:blur(10px);
-  padding:10px 24px;border-radius:8px;text-align:center;pointer-events:none;
-  opacity:0;transition:opacity 0.5s ease;max-width:90vw;
-}
-#subtitle-hud.active{opacity:1}
-#subtitle-hud .sub-title{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.25em;color:var(--tl);margin-bottom:3px}
-#subtitle-hud .sub-desc{font-size:14px;color:var(--fg);font-weight:500}
-
-/* Opening Cinematic Splash */
-#intro{
-  position:fixed;inset:0;z-index:99;background:#05080e;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;transition:opacity 1.4s ease,visibility 1.4s;padding:0 6vw;
-  cursor:pointer;
-}
-#intro.out{opacity:0;visibility:hidden;pointer-events:none}
-#intro .a{font-size:12px;letter-spacing:.5em;color:var(--tl);font-weight:700;opacity:0;animation:f 1.2s .2s forwards}
-#intro .b{
-  font-size:clamp(36px,8.5vw,96px);font-weight:800;letter-spacing:-.03em;
-  margin:18px 0;opacity:0;animation:f 1.6s .8s forwards;
-  background:linear-gradient(135deg,#fff 30%,var(--mut) 90%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-#intro .c{font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--or);font-size:clamp(22px,3.2vw,36px);opacity:0;animation:f 1.4s 1.8s forwards}
-#intro .skip{margin-top:28px;font-size:11px;letter-spacing:.3em;color:var(--mut);border:1px solid var(--line);padding:6px 16px;border-radius:999px;opacity:0;animation:f 1.2s 2.4s forwards}
-@keyframes f{to{opacity:1}}
-
-/* Page Content Container */
-main{position:relative;z-index:2;width:100%}
-section{
-  position:relative;min-height:100vh;padding:16vh 5vw 12vh;
-  display:flex;flex-direction:column;justify-content:center;
-  max-width:1300px;margin:auto;
-}
-
-/* Glassmorphism containers */
-.box{
-  max-width:580px;background:linear-gradient(90deg,rgba(5,8,14,.88) 60%,rgba(5,8,14,0));
-  padding:28px 28px 28px 0;border-radius:12px;
-}
-.wide .box{max-width:none;background:none;padding:0}
-
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:11px;letter-spacing:.3em;color:var(--tl);font-weight:700;
-  text-transform:uppercase;margin-bottom:14px;flex-wrap:wrap;
-}
-.eyebrow .pill{
-  background:rgba(45,226,230,0.12);border:1px solid rgba(45,226,230,0.35);
-  color:var(--tl);padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;
-}
-.eyebrow .pill.soc{
-  background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#f87171;
-}
-
-h1{font-size:clamp(44px,7.2vw,92px);line-height:.98;margin:0 0 18px;font-weight:800;letter-spacing:-.035em}
-h2{font-size:clamp(32px,5vw,60px);line-height:1.04;margin:0 0 18px;font-weight:800;letter-spacing:-.03em}
-em{font-family:'Instrument Serif',Georgia,serif;font-weight:400;color:var(--or);font-style:italic;letter-spacing:0}
-p{font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--mut);margin:0 0 16px}
-
-/* CTA Buttons */
-.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;
-  font-size:13px;font-weight:700;letter-spacing:.08em;text-decoration:none;
-  color:var(--fg);border:1px solid var(--line);background:rgba(10,16,26,.65);
-  backdrop-filter:blur(10px);cursor:pointer;transition:.3s cubic-bezier(.2,.8,.2,1);
-}
-.btn.p{
-  background:linear-gradient(90deg,var(--or),#ffb36b);color:#0b0b0b;border:0;
-  box-shadow:0 6px 20px rgba(255,138,61,0.25);
-}
-.btn.cyan{
-  background:rgba(45,226,230,0.15);border-color:var(--tl);color:var(--tl);
-}
-.btn.cyan:hover{box-shadow:0 8px 24px rgba(45,226,230,0.35)}
-.btn.soc-alert{
-  background:rgba(239,68,68,0.15);border-color:var(--rd);color:#fca5a5;
-}
-.btn.soc-alert:hover{box-shadow:0 8px 24px rgba(239,68,68,0.35)}
-.btn:hover{transform:translateY(-3px);border-color:var(--tl);color:var(--fg)}
-.btn.p:hover{box-shadow:0 12px 32px rgba(255,138,61,.45);color:#000}
-
-/* Stats Row */
-.stats{display:flex;gap:30px;margin-top:30px;flex-wrap:wrap}
-.stats div{border-left:2px solid var(--or);padding-left:14px}
-.stats div.soc-stat{border-left-color:var(--rd)}
-.stats b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--fg)}
-.stats span{font-size:11px;color:var(--mut);letter-spacing:.1em;text-transform:uppercase}
-
-/* Hero Split Layout */
-.hero-split{
-  display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;
-}
-@media(max-width:980px){
-  .hero-split{grid-template-columns:1fr;gap:30px}
-}
-
-/* GOOGLE FLOW VIDEO PORTAL */
-.flow-portal-card{
-  background:rgba(8,13,22,0.85);border:1px solid rgba(45,226,230,0.3);
-  border-radius:18px;overflow:hidden;backdrop-filter:blur(16px);
-  box-shadow:0 20px 50px rgba(0,0,0,0.6),0 0 30px rgba(45,226,230,0.12);
-  transition:border-color .3s,box-shadow .3s;
-}
-.flow-portal-card:hover{
-  border-color:var(--tl);box-shadow:0 25px 60px rgba(0,0,0,0.7),0 0 40px rgba(45,226,230,0.25);
-}
-.portal-hdr{
-  padding:12px 18px;background:rgba(5,9,18,0.9);border-bottom:1px solid var(--line);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.portal-hdr .tag{
-  display:flex;align-items:center;gap:8px;font-size:11px;
-  font-family:'JetBrains Mono',monospace;color:var(--tl);font-weight:700;
-}
-.portal-hdr .badge{
-  font-size:10px;background:rgba(245,158,11,0.2);color:#fbbf24;
-  border:1px solid #f59e0b;padding:2px 8px;border-radius:4px;
-  font-family:'JetBrains Mono',monospace;font-weight:700;
-}
-.portal-vid-wrap{
-  position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;cursor:pointer;
-}
-.portal-vid-wrap video{
-  width:100%;height:100%;object-fit:cover;display:block;
-}
-.portal-overlay{
-  position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 50% 50%,transparent 60%,rgba(0,0,0,0.4) 100%);
-  border-bottom:1px solid rgba(255,255,255,0.06);
-}
-.vid-play-overlay{
-  position:absolute;inset:0;background:rgba(5,9,18,0.65);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:12px;cursor:pointer;z-index:5;transition:opacity 0.3s ease,visibility 0.3s ease;
-  backdrop-filter:blur(3px);
-}
-.vid-play-overlay.hidden{
-  opacity:0;visibility:hidden;pointer-events:none;
-}
-.play-pulse-circle{
-  width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--or),#ffb36b);
-  color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;
-  box-shadow:0 0 25px rgba(255,138,61,0.65);transition:transform 0.2s ease,box-shadow 0.2s ease;
-}
-.vid-play-overlay:hover .play-pulse-circle{
-  transform:scale(1.12);box-shadow:0 0 35px rgba(255,138,61,0.9);
-}
-.vid-play-overlay span{
-  font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.18em;
-  color:#fff;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,0.85);
-}
-.portal-ctrls{
-  padding:12px 16px;background:rgba(5,9,18,0.95);display:flex;flex-wrap:wrap;
-  justify-content:space-between;align-items:center;gap:10px;
-}
-.vid-btn{
-  background:rgba(10,16,26,0.8);border:1px solid var(--line);color:var(--fg);
-  padding:6px 12px;border-radius:6px;font-size:10px;letter-spacing:.12em;
-  font-family:'JetBrains Mono',monospace;font-weight:700;cursor:pointer;transition:.2s;
-}
-.vid-btn:hover{border-color:var(--tl);color:var(--tl)}
-.vid-btn.active{border-color:var(--or);color:var(--or)}
-.portal-status{
-  font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--mut);
-  display:flex;align-items:center;gap:6px;
-}
-.portal-status b{color:var(--gr)}
-
-/* Toolkit Chips */
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-.chips span{
-  padding:9px 18px;border-radius:999px;border:1px solid var(--line);
-  background:rgba(10,16,28,.65);backdrop-filter:blur(8px);
-  font-size:13px;font-weight:500;transition:.25s;
-}
-.chips span:hover{border-color:var(--tl);transform:translateY(-2px);color:#fff}
-.chips span:nth-child(4n+1){border-color:rgba(45,226,230,.4)}
-.chips span:nth-child(4n+2){border-color:rgba(255,138,61,.4)}
-.chips span:nth-child(4n+3){border-color:rgba(239,68,68,.4)}
-.chips span:nth-child(4n){border-color:rgba(168,85,247,.4)}
-
-/* Projects Grid */
-.grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
-  gap:20px;margin-top:28px;
-}
-.card{
-  background:var(--bg-card);border:1px solid var(--line);border-radius:18px;
-  padding:26px;backdrop-filter:blur(14px);transition:transform .25s ease,border-color .3s ease,box-shadow .3s ease;
-  display:flex;flex-direction:column;justify-content:space-between;
-}
-.card:hover{
-  border-color:var(--tl);transform:translateY(-4px);
-  box-shadow:0 18px 40px rgba(0,0,0,0.5),0 0 25px rgba(45,226,230,0.15);
-}
-.card.soc-featured{
-  border-color:rgba(239,68,68,0.35);
-}
-.card.soc-featured:hover{
-  border-color:var(--rd);box-shadow:0 18px 40px rgba(0,0,0,0.6),0 0 25px rgba(239,68,68,0.25);
-}
-.card-badge{
-  display:inline-block;font-size:10px;font-family:'JetBrains Mono',monospace;
-  letter-spacing:.15em;font-weight:700;color:var(--tl);margin-bottom:10px;
-}
-.card-badge.soc{color:#f87171}
-.card h3{margin:0 0 10px;font-size:20px;font-weight:700;color:#fff}
-.card p{font-size:14px;line-height:1.65;margin:0 0 14px;color:var(--mut)}
-.card-bullets{list-style:none;margin:0 0 16px;padding:0}
-.card-bullets li{
-  position:relative;padding-left:16px;margin-bottom:6px;font-size:13px;
-  color:var(--mut);line-height:1.5;
-}
-.card-bullets li::before{
-  content:'▹';position:absolute;left:0;color:var(--tl);font-size:12px;
-}
-.card.soc-featured .card-bullets li::before{color:var(--rd)}
-.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.card-tag{
-  font-size:10px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);padding:3px 8px;border-radius:4px;color:var(--mut);
-}
-.card.soc-featured .card-tag{
-  border-color:rgba(239,68,68,0.2);color:#fca5a5;
-}
-.card-footer{
-  display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid var(--line);padding-top:14px;margin-top:auto;
-}
-.card-footer button{
-  background:none;border:none;color:var(--tl);font-size:12px;
-  font-family:'JetBrains Mono',monospace;font-weight:700;cursor:pointer;
-  transition:.2s;display:inline-flex;align-items:center;gap:4px;
-}
-.card.soc-featured .card-footer button{color:#f87171}
-.card-footer button:hover{color:var(--or)}
-.card-footer a{
-  color:var(--mut);text-decoration:none;font-size:11px;
-  font-family:'JetBrains Mono',monospace;transition:.2s;
-}
-.card-footer a:hover{color:var(--fg)}
-
-/* Skills Matrix Progress Bars */
-.skills-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;margin-top:24px;
-}
-.skill-box{
-  background:var(--bg-card);border:1px solid var(--line);border-radius:16px;
-  padding:22px;backdrop-filter:blur(12px);
-}
-.skill-box.soc-box{border-color:rgba(239,68,68,0.3)}
-.skill-box h4{
-  font-size:14px;letter-spacing:.12em;font-weight:700;color:var(--tl);
-  margin-bottom:16px;display:flex;align-items:center;gap:8px;
-}
-.skill-box.soc-box h4{color:#f87171}
-.skill-item{margin-bottom:14px}
-.skill-meta{
-  display:flex;justify-content:space-between;font-size:12px;
-  font-weight:600;margin-bottom:6px;
-}
-.skill-bar{
-  width:100%;height:6px;background:rgba(255,255,255,0.06);
-  border-radius:999px;overflow:hidden;
-}
-.skill-fill{
-  height:100%;background:linear-gradient(90deg,var(--tl),var(--or));
-  border-radius:999px;transition:width 1.2s ease-out;
-}
-.skill-fill.soc-fill{
-  background:linear-gradient(90deg,#ef4444,#f59e0b);
-}
-
-/* Timeline & Education Grid */
-.timeline-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:18px;margin-top:24px;
-}
-.timeline-card{
-  background:var(--bg-card);border:1px solid var(--line);border-radius:16px;
-  padding:22px;backdrop-filter:blur(12px);
-}
-.timeline-date{
-  font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--or);
-  font-weight:700;margin-bottom:6px;
-}
-.timeline-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
-.timeline-inst{font-size:13px;color:var(--tl);margin-bottom:10px}
-.timeline-score{
-  display:inline-block;background:rgba(45,226,230,0.12);border:1px solid rgba(45,226,230,0.3);
-  color:var(--tl);padding:3px 10px;border-radius:999px;font-size:11px;
-  font-family:'JetBrains Mono',monospace;font-weight:700;
-}
-.timeline-score.soc-score{
-  background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#fca5a5;
-}
-
-/* Contact layout */
-.contact-split{
-  display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:24px;
-}
-@media(max-width:850px){.contact-split{grid-template-columns:1fr}}
-.ct{display:grid;gap:12px}
-.ct a{
-  color:var(--fg);text-decoration:none;font-size:16px;
-  border:1px solid var(--line);background:rgba(10,16,26,.55);
-  border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;
-  align-items:center;transition:.3s;backdrop-filter:blur(8px);
-}
-.ct a span{font-size:11px;letter-spacing:.2em;color:var(--mut);font-family:'JetBrains Mono',monospace}
-.ct a:hover{color:var(--or);border-color:var(--or);transform:translateX(6px)}
-
-/* Contact Transceiver Form */
-.contact-form{
-  background:var(--bg-card);border:1px solid var(--line);border-radius:18px;
-  padding:24px;backdrop-filter:blur(14px);
-}
-.form-grp{margin-bottom:14px}
-.form-grp label{
-  display:block;font-size:11px;font-family:'JetBrains Mono',monospace;
-  letter-spacing:.12em;color:var(--mut);margin-bottom:6px;
-}
-.form-grp input,.form-grp textarea{
-  width:100%;background:rgba(5,9,18,0.85);border:1px solid var(--line);
-  color:#fff;border-radius:8px;padding:10px 14px;font-size:13px;
-  font-family:inherit;outline:none;transition:.2s;
-}
-.form-grp input:focus,.form-grp textarea:focus{
-  border-color:var(--tl);box-shadow:0 0 10px rgba(45,226,230,0.25);
-}
-
-/* Modal Windows */
-.modal-overlay{
-  position:fixed;inset:0;z-index:90;background:rgba(3,6,12,0.85);
-  backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;
-  padding:20px;opacity:0;pointer-events:none;transition:opacity .3s ease;
-}
-.modal-overlay.active{opacity:1;pointer-events:auto}
-.modal-window{
-  background:#090e18;border:1px solid var(--line-hl);border-radius:20px;
-  max-width:780px;width:100%;max-height:88vh;overflow-y:auto;
-  padding:32px;box-shadow:0 25px 80px rgba(0,0,0,0.8);position:relative;
-}
-.modal-close{
-  position:absolute;top:20px;right:24px;background:none;border:none;
-  color:var(--mut);font-size:26px;cursor:pointer;transition:.2s;line-height:1;
-}
-.modal-close:hover{color:#fff;transform:scale(1.15)}
-
-/* Reveal Animations */
-.rev{
-  opacity:0;transform:translateY(30px);filter:blur(4px);
-  transition:1.1s cubic-bezier(.2,.7,.2,1);
-}
-.rev.in{opacity:1;transform:none;filter:none}
-
-/* Mobile responsive */
-@media(max-width:800px){
-  .bar nav{display:none}
-  .box{background:rgba(5,8,14,.7);padding:20px;border-radius:14px;backdrop-filter:blur(8px)}
-  .header-actions{gap:6px}
-  .hdr-btn span{display:none}
-}
-</style>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- Three.js 3D WebGL Background Canvas -->
-<canvas id="c"></canvas>
+    <!-- Three.js 3D WebGL Canvas Layer -->
+    <div id="webgl-canvas-container"></div>
 
-<!-- Cinematic Visual Filters -->
-<div class="vig"></div>
-<div class="grain"></div>
-<div class="scanlines"></div>
+    <!-- Cinematic Overlays: Scanlines & Lens Vignette -->
+    <div class="cinematic-vignette"></div>
+    <div class="cinematic-scanlines"></div>
 
-<!-- Top Navigation Bar -->
-<div class="bar t">
-  <a href="#top" class="brand">
-    <div class="brand-dot"></div>
-    <b>GOPAL<span>.DATA &amp; SOC</span></b>
-  </a>
-  <nav>
-    <a href="#top" class="active">OVERVIEW</a>
-    <a href="#about">ABOUT</a>
-    <a href="#work">PROJECTS</a>
-    <a href="#skills">TOOLKIT</a>
-    <a href="#education">CREDENTIALS</a>
-    <a href="#contact">CONTACT</a>
-  </nav>
-  <div class="header-actions">
-    <button id="tour-btn" class="hdr-btn accent" title="Autonomous 3D Drone Flight Tour">
-      <span>▶</span> MOVIE TOUR
-    </button>
-    <button id="orbit-btn" class="hdr-btn" title="Inspect Gopal & Command Deck in 360°">
-      <span>🎥</span> 360° ORBIT
-    </button>
-    <button id="flow-modal-btn" class="hdr-btn flow" title="Google Flow (Veo AI) Video Studio & Prompts">
-      <span>🎬</span> GOOGLE FLOW AI
-    </button>
-    <button id="sound-btn" class="hdr-btn" title="Toggle Sci-Fi Ambience Soundscape">
-      🔊 <span id="sound-status">AUDIO: ON</span>
-    </button>
-    <a href="portfolio_bundle.zip" download="portfolio_bundle.zip" class="hdr-btn" title="Download Complete Portfolio ZIP Bundle">
-      📦 <span>FULL ZIP</span>
-    </a>
-  </div>
-</div>
+    <!-- Cinematic Letterbox Aspect Bars (Activated on Movie Tour) -->
+    <div class="letterbox-bar letterbox-top"></div>
+    <div class="letterbox-bar letterbox-bottom"></div>
 
-<!-- Bottom Cinematic Letterbox Bar -->
-<div class="bar b">
-  <span id="ch">OPENING</span>
-  <span>TC <i id="tc">00:00:00</i></span>
-</div>
-
-<!-- Scroll Progress Bar -->
-<div id="prog"></div>
-
-<!-- Movie Tour Subtitles -->
-<div id="subtitle-hud">
-  <div class="sub-title">GOPIREDDY GOPAL // DATA &amp; SOC ANALYST</div>
-  <div class="sub-desc">Data Intelligence · SIEM Log Correlation · Threat Hunting &amp; Incident Triage</div>
-</div>
-
-<!-- Opening Intro Splash -->
-<div id="intro" title="Click anywhere to begin">
-  <div class="a">A 3D CINEMATIC PORTFOLIO · DATA &amp; SOC ANALYST</div>
-  <div class="b">Gopireddy Gopal</div>
-  <div class="c">Where data meets defensive intelligence</div>
-  <div class="skip">CLICK TO ENTER COMMAND DECK ▹</div>
-</div>
-
-<!-- Main Page Sections Layer -->
-<main>
-
-  <!-- ================= SECTION 0: HERO (OVERVIEW & GOOGLE FLOW) ================= -->
-  <section id="top" data-ch="OPENING">
-    <div class="hero-split">
-      
-      <!-- Left: Analyst Profile & Fast Stats -->
-      <div class="box">
-        <div class="eyebrow rev">
-          <span>DATA ANALYST &amp; SOC ANALYST · BHIMAVARAM, INDIA</span>
-          <span class="pill soc">SIEM &amp; THREAT ACTIVE</span>
-        </div>
-        <h1 class="rev">Data &amp; threats into<br><em>decisive action.</em></h1>
-        <p class="rev">
-          I bridge business intelligence and cybersecurity operations — pairing <strong>Power BI, SQL, and Python</strong> 
-          with <strong>SIEM log correlation (Splunk, Elastic), threat hunting (MITRE ATT&amp;CK), and automated incident triage</strong> 
-          to protect systems and steer high-conviction decisions.
-        </p>
-
-        <div class="btn-row rev">
-          <a class="btn p" href="#work">Explore Projects ▹</a>
-          <button class="btn cyan" id="hero-focus-btn">Focus 3D Holo 🎥</button>
-          <a class="btn soc-alert" href="#skills">SOC Defense Matrix 🛡️</a>
-          <a class="btn" href="#contact">Hire Gopal ✉</a>
-        </div>
-
-        <div class="stats rev">
-          <div><b>8.56</b><span>CGPA, B.H.M.</span></div>
-          <div class="soc-stat"><b>SIEM</b><span>SPLUNK &amp; SOC LABS</span></div>
-          <div><b>8</b><span>WORKING PROJECTS</span></div>
-          <div><b>24/7</b><span>DEFENSIVE READY</span></div>
-        </div>
-      </div>
-
-      <!-- Right: Google Flow / Veo AI 4K Cinematic Video Reel -->
-      <div class="flow-portal-card rev">
-        <div class="portal-hdr">
-          <div class="tag">
-            <div class="brand-dot"></div>
-            <span>GOOGLE FLOW // VEO AI</span>
-          </div>
-          <span class="badge">4K CINEMATIC REEL</span>
-        </div>
-
-        <div class="portal-vid-wrap" id="portal-vid-container" title="Click to play / pause video">
-          <video id="hero-flow-video" preload="auto" autoplay loop muted playsinline webkit-playsinline>
-            <source src="assets/cinematic_person.mp4" type="video/mp4">
-            <source src="portfolio/assets/cinematic_person.mp4" type="video/mp4">
-            Your browser does not support HTML5 video.
-          </video>
-          <div class="portal-overlay"></div>
-          <!-- Click to play overlay -->
-          <div id="vid-play-overlay" class="vid-play-overlay">
-            <div class="play-pulse-circle">▶</div>
-            <span>CLICK TO PLAY 4K AI REEL</span>
-          </div>
-        </div>
-
-        <div class="portal-ctrls">
-          <div style="display:flex; gap:8px;">
-            <button id="vid-play-btn" class="vid-btn">▶ PLAY</button>
-            <button id="vid-sound-btn" class="vid-btn">🔇 UNMUTE</button>
-            <button id="vid-cinema-btn" class="vid-btn" style="border-color:var(--or); color:var(--or);">⛶ THEATER</button>
-          </div>
-          <div class="portal-status" id="video-status-indicator">
-            <span>VIDEO:</span>
-            <b id="vid-status-text" style="color:var(--or);">PAUSED (CLICK TO PLAY)</b>
-          </div>
-        </div>
-      </div>
-
+    <!-- Subtitles for Cinematic Movie Tour -->
+    <div id="cinematic-subtitle-hud">
+        <div class="sub-title">GOPIREDDY GOPAL // DATA &amp; BLUE TEAM SOC ANALYST</div>
+        <div class="sub-desc">Blue Team SIEM Defense · Threat Hunting · Data Intelligence &amp; SOAR Engineering</div>
     </div>
-  </section>
 
+    <!-- TOP NAVIGATION & COMMAND BAR -->
+    <header class="top-nav">
+        <a href="#hero" class="brand-badge">
+            <div class="brand-pulse-dot"></div>
+            <div class="brand-title">GOPAL<span>.BLUE TEAM</span></div>
+            <span class="brand-tag">3D HUD v2.5</span>
+        </a>
 
-  <!-- ================= SECTION 1: ABOUT ================= -->
-  <section id="about" data-ch="ABOUT">
-    <div class="box">
-      <div class="eyebrow rev">ABOUT GOPAL</div>
-      <h2 class="rev">Data acumen meets<br><em>SOC defense.</em></h2>
-      <p class="rev">
-        I earned my Bachelor of Hotel Management at Southern Hotel Management (Andhra University) graduating with an 
-        <strong>8.56 CGPA</strong>, instilling strong discipline in operational metrics, crisis management, and process execution.
-      </p>
-      <p class="rev">
-        I transformed this foundation into data analytics and security engineering through a comprehensive 
-        <strong>6-month Full Stack Data Science program &amp; 2-month internship at DataTeach.ai</strong>, 
-        and specialized hands-on <strong>SOC (Security Operations Center) defense labs</strong>. 
-        I excel at ingesting heterogeneous event logs, correlating multi-stage attack telemetry (Sysmon, Windows Event IDs, Firewalls), 
-        and hunting threats using the <strong>MITRE ATT&amp;CK framework</strong>.
-      </p>
-      <p class="rev">
-        Beyond enterprise pipelines, I founded <strong>Weblytics</strong>, delivering data analytics and secured web solutions for commercial businesses.
-      </p>
-      <div class="btn-row rev">
-        <a class="btn" href="mailto:gopalgopireddy9@gmail.com">Request Full Resume (.PDF)</a>
-      </div>
-    </div>
-  </section>
+        <ul class="nav-links">
+            <li><a href="#hero" class="nav-link active" data-index="0">OVERVIEW</a></li>
+            <li><a href="#about" class="nav-link" data-index="1">ABOUT</a></li>
+            <li><a href="#projects" class="nav-link" data-index="2">PROJECTS</a></li>
+            <li><a href="#skills" class="nav-link" data-index="3">SKILLS MATRIX</a></li>
+            <li><a href="#timeline" class="nav-link" data-index="4">TIMELINE</a></li>
+            <li><a href="#contact" class="nav-link" data-index="5">CONTACT</a></li>
+        </ul>
 
-
-  <!-- ================= SECTION 2: PROJECTS (SELECTED WORK) ================= -->
-  <section id="work" class="wide" data-ch="SELECTED WORK">
-    <div class="box">
-      <div class="eyebrow rev">
-        <span>PORTFOLIO CASE STUDIES</span>
-        <span class="pill soc">8 ACTIVE REPOSITORIES</span>
-      </div>
-      <h2 class="rev">Engineered <em>data &amp; SOC solutions.</em></h2>
-      <p class="rev">
-        Click on <strong>"View Architecture"</strong> on any project to inspect system design diagrams, Splunk SPL queries, and Python code snippets.
-      </p>
-
-      <div class="grid">
-
-        <!-- Project 1: SOC Threat Hunting & SIEM Log Analysis Lab -->
-        <div class="card soc-featured rev">
-          <div>
-            <span class="card-badge soc">🛡️ SIEM · SPLUNK · ELASTIC · MITRE ATT&amp;CK · SYSMON</span>
-            <h3>SOC Threat Hunting &amp; SIEM Log Analysis Lab</h3>
-            <p>Enterprise SOC laboratory ingesting Sysmon and Windows Security Event logs to detect brute-force, privilege escalation, and lateral movement.</p>
-            <ul class="card-bullets">
-              <li>Ingested Event IDs (4624, 4625, 4672, 7045, 4688) into Splunk/Elasticsearch.</li>
-              <li>Engineered custom correlation rules mapped to MITRE ATT&amp;CK tactics (T1003, T1059, T1110).</li>
-              <li>Simulated adversary attacks using Atomic Red Team and formulated incident response briefs.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">Splunk</span>
-              <span class="card-tag">Sysmon</span>
-              <span class="card-tag">MITRE ATT&amp;CK</span>
-              <span class="card-tag">SIEM</span>
-              <span class="card-tag">SPL / KQL</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="soc-threat-hunting">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2: Automated Incident Response & Malware Triage Pipeline -->
-        <div class="card soc-featured rev">
-          <div>
-            <span class="card-badge soc">🛡️ PYTHON · WIRESHARK · PCAP ANALYSIS · VIRUSTOTAL API · NIST</span>
-            <h3>Automated Incident Response &amp; Malware Triage</h3>
-            <p>Automated security triage pipeline extracting indicators of compromise (IOCs), analyzing PCAP streams, and scoring malware artifacts.</p>
-            <ul class="card-bullets">
-              <li>Engineered Python automated triage script querying VirusTotal &amp; AbuseIPDB APIs.</li>
-              <li>Conducted deep packet inspection (PCAP) with Wireshark to isolate C2 beaconing and DNS tunnels.</li>
-              <li>Designed structured incident containment playbooks adhering to NIST SP 800-61 frameworks.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">Python</span>
-              <span class="card-tag">Wireshark</span>
-              <span class="card-tag">PCAP</span>
-              <span class="card-tag">VirusTotal API</span>
-              <span class="card-tag">NIST SP 800-61</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="incident-response">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3: User Behavioural Analysis -->
-        <div class="card rev">
-          <div>
-            <span class="card-badge">PYTHON · DATA CLEANING · VISUALIZATION</span>
-            <h3>User Behavioural Analysis</h3>
-            <p>End-to-end customer interaction intelligence uncovering behavioral patterns, engagement funnels, and churn triggers.</p>
-            <ul class="card-bullets">
-              <li>Collected and transformed raw interaction logs using Pandas and SQL.</li>
-              <li>Engineered cohort retention curves and correlation heatmaps.</li>
-              <li>Delivered visual reports and actionable insights steering product retention.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">Python</span>
-              <span class="card-tag">Pandas</span>
-              <span class="card-tag">Seaborn</span>
-              <span class="card-tag">MySQL</span>
-              <span class="card-tag">EDA</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="user-behavior">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 4: AI Resume Analyzer + Job Matcher -->
-        <div class="card rev">
-          <div>
-            <span class="card-badge">NLP · ML · GENAI · PYTHON</span>
-            <h3>AI Resume Analyzer + Job Matcher</h3>
-            <p>AI-driven resume parsing and career matching engine bridging guidance gaps for students through NLP parsing and ATS simulation.</p>
-            <ul class="card-bullets">
-              <li>Parsed resumes for keyword density, formatting, and structural flaws.</li>
-              <li>Calculated ATS match scores against live job descriptions via TF-IDF &amp; Cosine Sim.</li>
-              <li>Integrated GenAI suggestion engine and automated job recommendation algorithms.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">NLP</span>
-              <span class="card-tag">Scikit-Learn</span>
-              <span class="card-tag">GenAI</span>
-              <span class="card-tag">Python</span>
-              <span class="card-tag">ATS Engine</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="resume-analyzer">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 5: Chatbot Development using NLTK -->
-        <div class="card rev">
-          <div>
-            <span class="card-badge">PYTHON · NLTK · NLP</span>
-            <h3>Chatbot Development using NLTK</h3>
-            <p>Natural language understanding chatbot engineered completely from scratch for automated intent classification and contextual dialogue.</p>
-            <ul class="card-bullets">
-              <li>Engineered custom tokenization, lemmatization, and bag-of-words pipelines.</li>
-              <li>Trained intent classification models for automated customer response.</li>
-              <li>Demonstrated applied machine learning and contextual dialogue routing.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">NLTK</span>
-              <span class="card-tag">Python</span>
-              <span class="card-tag">Intent Classification</span>
-              <span class="card-tag">ML</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="chatbot">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 6: Android App Development -->
-        <div class="card rev">
-          <div>
-            <span class="card-badge">ANDROID · JAVA · MOBILE ARCHITECTURE</span>
-            <h3>Android App Development</h3>
-            <p>Functional mobile application demonstrating comprehensive software development lifecycle, responsive UI, and persistent data storage.</p>
-            <ul class="card-bullets">
-              <li>Designed responsive mobile layouts with Java and XML.</li>
-              <li>Engineered clean component lifecycle and activity navigation.</li>
-              <li>Showcased full-cycle software execution and exception handling.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">Android Studio</span>
-              <span class="card-tag">Java</span>
-              <span class="card-tag">Mobile UI</span>
-              <span class="card-tag">SQLite</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="android-app">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 7: ResumeIQ India -->
-        <div class="card rev">
-          <div>
-            <span class="card-badge">WEB PLATFORM · APIS · RECRUITMENT TECH</span>
-            <h3>ResumeIQ India</h3>
-            <p>AI recruitment portal tailored for Indian job seekers with automated job board aggregations, ATS scoring, and dynamic resume generation.</p>
-            <ul class="card-bullets">
-              <li>Unified live job vacancies with automated candidate skill match.</li>
-              <li>Integrated live ATS simulation scoring and PDF export.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">Web Platform</span>
-              <span class="card-tag">APIs</span>
-              <span class="card-tag">ATS Engine</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="resumeiq">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 8: Weblytics Agency -->
-        <div class="card rev">
-          <div>
-            <span class="card-badge">VENTURE · WEB · ANALYTICS</span>
-            <h3>Weblytics</h3>
-            <p>Digital analytics and custom web solutions for local enterprises and commercial ventures, delivering end-to-end presence and funnel tracking.</p>
-            <ul class="card-bullets">
-              <li>Built conversion-optimized sites including ANSHI Batters food venture.</li>
-              <li>Implemented real-time traffic analytics and funnel attribution.</li>
-            </ul>
-          </div>
-          <div>
-            <div class="card-tags">
-              <span class="card-tag">Analytics</span>
-              <span class="card-tag">Web Design</span>
-              <span class="card-tag">Funnel Tracking</span>
-            </div>
-            <div class="card-footer">
-              <button class="proj-modal-btn" data-proj="weblytics">VIEW ARCHITECTURE ▹</button>
-              <a href="https://github.com/gopalgopireddy9-png" target="_blank">GITHUB ↗</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ================= SECTION 3: SKILLS MATRIX ================= -->
-  <section id="skills" class="wide" data-ch="SKILLS">
-    <div class="box">
-      <div class="eyebrow rev">
-        <span>TECHNICAL COMPETENCIES</span>
-        <span class="pill soc">DATA &amp; SOC DEFENSE STACK</span>
-      </div>
-      <h2 class="rev">Tools I <em>work with.</em></h2>
-      <p class="rev">Specialized data analytics and security operations stack applied to extract insights, monitor SIEM feeds, and isolate threats.</p>
-
-      <div class="chips rev" style="margin-bottom:28px;">
-        <span>SIEM (Splunk, Elastic)</span>
-        <span>MITRE ATT&amp;CK</span>
-        <span>Wireshark &amp; PCAP</span>
-        <span>Sysmon &amp; Event Logs</span>
-        <span>Incident Response (NIST)</span>
-        <span>Threat Hunting</span>
-        <span>Advanced Excel (VLOOKUP, Pivot)</span>
-        <span>MySQL</span>
-        <span>Power BI</span>
-        <span>Tableau</span>
-        <span>Python (Pandas, NumPy)</span>
-        <span>NLP (NLTK)</span>
-        <span>Machine Learning</span>
-        <span>Git &amp; GitHub</span>
-      </div>
-
-      <div class="skills-grid">
-        <!-- Card 1: SOC Operations -->
-        <div class="skill-box soc-box rev">
-          <h4>🛡️ SOC &amp; CYBERSECURITY OPERATIONS</h4>
-          <div class="skill-item">
-            <div class="skill-meta"><span>SIEM &amp; Log Analysis (Splunk, Elastic)</span><span>92%</span></div>
-            <div class="skill-bar"><div class="skill-fill soc-fill" style="width:92%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Threat Detection &amp; MITRE ATT&amp;CK</span><span>90%</span></div>
-            <div class="skill-bar"><div class="skill-fill soc-fill" style="width:90%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Network Traffic &amp; Wireshark PCAPs</span><span>88%</span></div>
-            <div class="skill-bar"><div class="skill-fill soc-fill" style="width:88%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Incident Response &amp; Triage (NIST)</span><span>86%</span></div>
-            <div class="skill-bar"><div class="skill-fill soc-fill" style="width:86%"></div></div>
-          </div>
-        </div>
-
-        <!-- Card 2: Data & Analytics -->
-        <div class="skill-box rev">
-          <h4>📊 DATA &amp; ANALYTICS</h4>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Advanced Excel &amp; Formulas</span><span>95%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>SQL / MySQL Queries &amp; Joins</span><span>92%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Power BI Dashboards</span><span>90%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Tableau Visualizations</span><span>88%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-          </div>
-        </div>
-
-        <!-- Card 3: Programming & AI -->
-        <div class="skill-box rev">
-          <h4>🐍 PROGRAMMING &amp; AI</h4>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Python (Data &amp; Security Automation)</span><span>90%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Pandas, NumPy &amp; Seaborn</span><span>92%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>NLP &amp; Text Processing (NLTK)</span><span>86%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:86%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>GenAI &amp; Google Flow Integration</span><span>88%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-          </div>
-        </div>
-
-        <!-- Card 4: Core Competencies -->
-        <div class="skill-box rev">
-          <h4>🎯 CORE EXPERTISE</h4>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Data Cleaning &amp; Imputation</span><span>94%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:94%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>User Behavioural Modeling</span><span>90%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Threat Hunting &amp; Root Cause Analysis</span><span>88%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-meta"><span>Git &amp; Version Control</span><span>85%</span></div>
-            <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ================= SECTION 4: EDUCATION & CERTS ================= -->
-  <section id="education" class="wide" data-ch="EDUCATION">
-    <div class="box">
-      <div class="eyebrow rev">ACADEMIC &amp; PROFESSIONAL BACKGROUND</div>
-      <h2 class="rev">Education &amp; <em>credentials.</em></h2>
-      <p class="rev">Verified degrees, analytical certifications, and security operations training.</p>
-
-      <div class="timeline-grid">
-        <div class="timeline-card rev">
-          <div class="timeline-date">SOC DEFENSE LABS</div>
-          <div class="timeline-title">SOC Operations &amp; Threat Detection</div>
-          <div class="timeline-inst">SIEM · Splunk · MITRE ATT&amp;CK · Sysmon</div>
-          <span class="timeline-score soc-score">PRACTICAL SOC READY</span>
-          <p style="font-size:13px; color:var(--mut); margin-top:10px;">
-            Simulated adversary emulation, brute-force &amp; lateral movement detection, Sysmon telemetry parsing, and NIST incident triage runbooks.
-          </p>
-        </div>
-
-        <div class="timeline-card rev">
-          <div class="timeline-date">2022 — 2025</div>
-          <div class="timeline-title">Bachelor of Hotel Management</div>
-          <div class="timeline-inst">Southern Hotel Management · Andhra University</div>
-          <span class="timeline-score">CGPA: 8.56 / 10.0</span>
-          <p style="font-size:13px; color:var(--mut); margin-top:10px;">
-            Graduated with distinction. Rigorous focus on operational efficiency, crisis mitigation, and business analytics.
-          </p>
-        </div>
-
-        <div class="timeline-card rev">
-          <div class="timeline-date">AUG 2025 — FEB 2026</div>
-          <div class="timeline-title">Full Stack Data Science Course</div>
-          <div class="timeline-inst">DataTeach.ai · 6-Month Intensive</div>
-          <span class="timeline-score">COMPLETED WITH HONORS</span>
-          <p style="font-size:13px; color:var(--mut); margin-top:10px;">
-            Comprehensive curriculum covering SQL, Python, Pandas, Machine Learning, Power BI, and statistical analysis.
-          </p>
-        </div>
-
-        <div class="timeline-card rev">
-          <div class="timeline-date">DEC 2025 — FEB 2026</div>
-          <div class="timeline-title">Data Science Internship</div>
-          <div class="timeline-inst">DataTeach.ai · 2-Month Applied Internship</div>
-          <span class="timeline-score">PROJECT EXCELLENCE</span>
-          <p style="font-size:13px; color:var(--mut); margin-top:10px;">
-            Hands-on data cleaning, exploratory analysis, and automated KPI visualization on real enterprise datasets.
-          </p>
-        </div>
-
-        <div class="timeline-card rev">
-          <div class="timeline-date">2020</div>
-          <div class="timeline-title">Intermediate (MPC)</div>
-          <div class="timeline-inst">Sri Chaitanya Jr. College, Bhimavaram</div>
-          <span class="timeline-score">792 MARKS</span>
-          <p style="font-size:13px; color:var(--mut); margin-top:10px;">
-            Core foundation in Mathematics, Physics, and analytical logic.
-          </p>
-        </div>
-
-        <div class="timeline-card rev">
-          <div class="timeline-date">2018</div>
-          <div class="timeline-title">SSC (10th Grade)</div>
-          <div class="timeline-inst">Narayana School</div>
-          <span class="timeline-score">GPA: 8.2</span>
-          <p style="font-size:13px; color:var(--mut); margin-top:10px;">
-            Strong quantitative problem-solving and communication aptitude.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ================= SECTION 5: CONTACT ================= -->
-  <section id="contact" data-ch="CONTACT">
-    <div class="box" style="max-width:none;">
-      <div class="eyebrow rev">COMMUNICATION UPLINK</div>
-      <h2 class="rev">Let’s work <em>together.</em></h2>
-      <p class="rev">Open to full-time Data Analyst and SOC Analyst roles, security monitoring, and analytics consulting.</p>
-
-      <div class="contact-split">
-        <!-- Direct Links -->
-        <div class="ct rev">
-          <a href="mailto:gopalgopireddy9@gmail.com">
-            <div>
-              <b>gopalgopireddy9@gmail.com</b>
-            </div>
-            <span>EMAIL ✉</span>
-          </a>
-          <a href="tel:+919391865480">
-            <div>
-              <b>+91 93918 65480</b>
-            </div>
-            <span>PHONE 📞</span>
-          </a>
-          <a href="https://github.com/gopalgopireddy9-png" target="_blank">
-            <div>
-              <b>gopalgopireddy9-png</b>
-            </div>
-            <span>GITHUB ↗</span>
-          </a>
-          <a href="https://www.linkedin.com/in/gopal-gopireddy-88b377226" target="_blank">
-            <div>
-              <b>Gopal Gopireddy</b>
-            </div>
-            <span>LINKEDIN ↗</span>
-          </a>
-        </div>
-
-        <!-- Interactive Direct Message Form -->
-        <div class="contact-form rev">
-          <form id="msg-form">
-            <div class="form-grp">
-              <label>YOUR NAME / ORGANIZATION</label>
-              <input type="text" id="frm-name" placeholder="e.g. SOC Lead, Hiring Manager, Tech Corp" required>
-            </div>
-            <div class="form-grp">
-              <label>YOUR EMAIL</label>
-              <input type="email" id="frm-email" placeholder="name@company.com" required>
-            </div>
-            <div class="form-grp">
-              <label>MESSAGE / ROLE DETAILS</label>
-              <textarea id="frm-msg" rows="3" placeholder="Tell Gopal about your open Data Analyst or SOC Analyst opportunity..." required></textarea>
-            </div>
-            <button type="submit" id="frm-submit-btn" class="btn p" style="width:100%; justify-content:center;">
-              DISPATCH SIGNAL ▹
+        <div class="nav-actions">
+            <!-- Cinematic Movie Tour Toggle -->
+            <button id="cinema-tour-btn" class="hud-btn hud-btn-primary hud-btn-glow" title="Watch full 3D cinematic auto camera tour">
+                <span>▶ MOVIE TOUR</span>
             </button>
-            <div id="frm-feedback" style="display:none; margin-top:10px; font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--gr); text-align:center;"></div>
-          </form>
+
+            <!-- 360 Orbit Toggle -->
+            <button id="orbit-toggle-btn" class="hud-btn" title="Inspect Gopal & Command Deck in 360°">
+                🎥 360° ORBIT
+            </button>
+
+            <!-- Custom 3D Avatar Uploader -->
+            <button id="avatar-upload-btn" class="hud-btn" title="Load ReadyPlayerMe or custom .glb model">
+                👤 LOAD 3D AVATAR
+            </button>
+            <input type="file" id="avatar-upload-input" accept=".glb,.gltf" style="display:none;">
+
+            <!-- Google Flow (Veo AI) Integration -->
+            <button id="flow-studio-btn" class="hud-btn" style="border-color: #f59e0b; color: #fbbf24;" title="Google Flow (Veo AI) Video Studio & Prompts">
+                🎬 GOOGLE FLOW AI
+            </button>
+            <input type="file" id="flow-video-input" accept="video/mp4,video/webm" style="display:none;">
+
+            <!-- Audio FX Toggle -->
+            <button id="sound-toggle-btn" class="hud-btn" title="Toggle Sci-Fi Ambience & UI Sound FX">
+                <span class="sound-bars">
+                    <span class="sound-bar"></span>
+                    <span class="sound-bar"></span>
+                    <span class="sound-bar"></span>
+                </span>
+                <span class="sound-status-text">AUDIO: OFF</span>
+            </button>
+
+            <!-- Download HTML & Full Bundle -->
+            <a href="index.html" download="index.html" class="hud-btn" title="Download index.html file">
+                📥 DOWNLOAD HTML
+            </a>
+            <a href="portfolio_bundle.zip" download="portfolio_bundle.zip" class="hud-btn hud-btn-primary" title="Download Complete Portfolio Bundle (.zip)">
+                📦 FULL ZIP
+            </a>
         </div>
-      </div>
+    </header>
 
+    <!-- FLOATING LEFT TELEMETRY HUD -->
+    <aside class="telemetry-hud">
+        <div class="telemetry-row">
+            <span>DEFENSE:</span>
+            <span class="telemetry-val" style="color:#60a5fa;">BLUE TEAM [SIEM/SOC]</span>
+        </div>
+        <div class="telemetry-row">
+            <span>PERF:</span>
+            <span class="telemetry-val" id="hud-fps">60 FPS</span>
+        </div>
+        <div class="telemetry-row">
+            <span>CAMERA POS:</span>
+            <span class="telemetry-val" id="hud-cam-coords">[0.0, 2.0, 5.2]</span>
+        </div>
+        <div class="telemetry-row">
+            <span>LOCATION:</span>
+            <span class="telemetry-val">BHIMAVARAM, AP</span>
+        </div>
+    </aside>
+
+    <!-- RIGHT SECTION DOTS -->
+    <nav class="section-nav-dots" aria-label="Quick Section Navigation">
+        <div class="nav-dot active" data-index="0" data-tooltip="Overview // Hero"></div>
+        <div class="nav-dot" data-index="1" data-tooltip="About & Philosophy"></div>
+        <div class="nav-dot" data-index="2" data-tooltip="Featured Projects"></div>
+        <div class="nav-dot" data-index="3" data-tooltip="Skills & Tech Matrix"></div>
+        <div class="nav-dot" data-index="4" data-tooltip="Education & Certs"></div>
+        <div class="nav-dot" data-index="5" data-tooltip="Contact & Transceiver"></div>
+    </nav>
+
+    <!-- SCROLLABLE SECTIONS LAYER -->
+    <main id="content-container">
+
+        <!-- ====================================================================
+             SECTION 0: HERO (OVERVIEW)
+             ==================================================================== -->
+        <section id="hero" class="content-section hero-section" data-index="0">
+            <div class="hero-grid">
+                <!-- Left: Professional Overview & Metrics -->
+                <div class="glass-panel hero-content">
+                    <div class="hero-status-pill">
+                        <span class="live-beacon"></span>
+                        <span>READY FOR IMMEDIATE HIRE • DATA ANALYST &amp; BLUE TEAM SOC ANALYST</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="gradient-text">GOPIREDDY GOPAL</span>
+                    </h1>
+
+                    <div class="hero-subtitle">
+                        <span>Power BI &amp; SQL</span>
+                        <span class="separator">//</span>
+                        <span>Blue Team SIEM (Splunk/Wazuh)</span>
+                        <span class="separator">//</span>
+                        <span>Sigma &amp; SOAR</span>
+                        <span class="separator">//</span>
+                        <span>Threat Hunting</span>
+                    </div>
+
+                    <p class="hero-desc">
+                        Data Analyst &amp; Blue Team SOC Analyst bridging business intelligence with defensive cybersecurity operations. 
+                        Proficient in <strong>SQL, Power BI, Python</strong>, alongside <strong>SIEM correlation (Splunk, Elastic, Wazuh), Sigma/YARA rules, threat hunting (MITRE ATT&amp;CK &amp; D3FEND), and SOAR containment</strong>.
+                    </p>
+
+                    <div class="hero-cta-group">
+                        <a href="#projects" class="hud-btn hud-btn-primary">
+                            EXPLORE PROJECTS ▹
+                        </a>
+                        <a href="#contact" class="hud-btn">
+                            GET IN TOUCH ✉
+                        </a>
+                        <a href="mailto:gopalgopireddy9@gmail.com" class="hud-btn" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">
+                            HIRE ME DIRECTLY
+                        </a>
+                        <a href="index.html" download="index.html" class="hud-btn" style="border-color: var(--accent-cyan); color: var(--accent-cyan);" title="Download index.html">
+                            DOWNLOAD HTML ⬇
+                        </a>
+                    </div>
+
+                    <div class="hero-metrics-row">
+                        <div class="hero-metric-item">
+                            <div class="metric-num">10+</div>
+                            <div class="metric-label">Key Projects</div>
+                        </div>
+                        <div class="hero-metric-item">
+                            <div class="metric-num">8.56</div>
+                            <div class="metric-label">Degree CGPA</div>
+                        </div>
+                        <div class="hero-metric-item">
+                            <div class="metric-num">BLUE TEAM</div>
+                            <div class="metric-label">SOC / SIEM / EDR</div>
+                        </div>
+                        <div class="hero-metric-item">
+                            <div class="metric-num">24/7</div>
+                            <div class="metric-label">Defensive Ready</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Google Flow / Veo AI Cinematic Video Portal -->
+                <div class="hero-video-portal">
+                    <div class="video-portal-header">
+                        <div class="portal-badge">
+                            <span class="live-beacon"></span>
+                            <span>GOOGLE FLOW // CINEMATIC REEL</span>
+                        </div>
+                        <span class="portal-tag">4K AI VIDEO</span>
+                    </div>
+
+                    <div class="video-wrapper">
+                        <video id="hero-flow-video" src="assets/cinematic_person.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-overlay-fx"></div>
+                        <div class="video-controls-bar">
+                            <button id="video-play-toggle" class="vid-ctrl-btn" title="Play or Pause">⏸ PAUSE</button>
+                            <button id="video-audio-toggle" class="vid-ctrl-btn" title="Toggle Sound">🔇 UNMUTE</button>
+                            <button id="video-theater-btn" class="vid-ctrl-btn" style="border-color:#f59e0b; color:#fbbf24;" title="Fullscreen Cinema Theater">⛶ CINEMA</button>
+                        </div>
+                    </div>
+
+                    <div class="video-portal-footer">
+                        <div class="portal-meta">
+                            <span class="meta-label">3D ENGINE STATUS:</span>
+                            <span class="meta-status">STREAMING ON 3D HOLOGRAM DECK</span>
+                        </div>
+                        <button id="focus-3d-hologram-btn" class="hud-btn hud-btn-primary" style="font-size:0.75rem; padding:5px 12px;" title="Zoom 3D camera to central hologram">
+                            FOCUS 3D CAM 🎥
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             SECTION 1: ABOUT (ANALYTICAL PROFILE)
+             ==================================================================== -->
+        <section id="about" class="content-section about-section" data-index="1">
+            <div class="glass-panel about-card">
+                <div class="section-tag">
+                    <span>01 // PROFILE MATRIX</span>
+                </div>
+                <h2 class="section-title">The Analytical Mindset</h2>
+
+                <div class="about-narrative">
+                    <p>
+                        With a rigorous foundation developed through hands-on data collection and behavioral pattern recognition,
+                        I bridge the gap between raw data chaos and clean, actionable business decisions.
+                    </p>
+                    <p>
+                        Proficient across <strong>Advanced Excel, SQL (MySQL), Power BI, Tableau, and Python</strong>. 
+                        A fast learner with strong analytical thinking, meticulous attention to detail, and a focus on measurable impact.
+                    </p>
+                </div>
+
+                <div class="highlight-stat-box">
+                    "Skilled in identifying subtle customer trends, transforming unstructured logs into predictive insights, and presenting executive findings that steer growth."
+                </div>
+
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+                    Core Analytical &amp; Blue Team Competencies:
+                </div>
+                <div class="competencies-list">
+                    <span class="skill-chip" style="border-color:rgba(59,130,246,0.45); color:#93c5fd;">Blue Team SOC</span>
+                    <span class="skill-chip" style="border-color:rgba(59,130,246,0.45); color:#93c5fd;">SIEM &amp; Detection Engineering</span>
+                    <span class="skill-chip" style="border-color:rgba(59,130,246,0.45); color:#93c5fd;">Sigma / YARA &amp; SOAR</span>
+                    <span class="skill-chip">User Behaviour Analysis</span>
+                    <span class="skill-chip">Data Cleaning & Wrangling</span>
+                    <span class="skill-chip">Statistical Analysis</span>
+                    <span class="skill-chip">Executive Dashboards</span>
+                    <span class="skill-chip">SQL Complex Queries</span>
+                    <span class="skill-chip">Hotel Management PMS</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             SECTION 2: PROJECTS SHOWCASE
+             ==================================================================== -->
+        <section id="projects" class="content-section projects-section" data-index="2">
+            <div class="projects-container">
+                <div class="projects-header">
+                    <div class="section-tag">
+                        <span>02 // PORTFOLIO SHOWCASE</span>
+                    </div>
+                    <h2 class="section-title">Engineered Data & AI Solutions</h2>
+                    <p style="color: var(--text-secondary); max-width: 600px;">
+                        Interactive case studies demonstrating end-to-end data pipelines, NLP models, and full lifecycle execution.
+                    </p>
+                </div>
+
+                <div class="projects-grid">
+
+                    <!-- Project 1: Blue Team SOC Threat Hunting & SIEM Log Analysis Lab -->
+                    <div class="project-card" style="border-color: rgba(59,130,246,0.4);">
+                        <div class="project-top">
+                            <span class="project-badge" style="color: #60a5fa; border-color: rgba(59,130,246,0.45);">🛡️ BLUE TEAM SOC · SIEM · SPLUNK · ELASTIC · MITRE ATT&amp;CK</span>
+                            <h3 class="project-title">Blue Team SOC Threat Hunting &amp; SIEM Lab</h3>
+                            <p class="project-desc">
+                                Enterprise Blue Team SOC laboratory ingesting Sysmon and Windows Security Event logs to hunt brute-force, privilege escalation, and lateral movement.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Ingested Event IDs (4624, 4625, 4672, 7045, 4688) into Splunk/Elasticsearch for real-time triage.</li>
+                                <li>Engineered Blue Team correlation rules mapped to MITRE ATT&amp;CK tactics (T1003, T1059, T1110).</li>
+                                <li>Validated defenses against Atomic Red Team adversary emulation and authored Tier-2 incident briefs.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Blue Team SOC</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Splunk SIEM</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Sysmon</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">MITRE ATT&amp;CK</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">SPL / KQL</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="soc-threat-hunting" style="background:none; border:none; padding:0; color:#60a5fa;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Blue Team DFIR, Malware Triage & PCAP Pipeline -->
+                    <div class="project-card" style="border-color: rgba(59,130,246,0.4);">
+                        <div class="project-top">
+                            <span class="project-badge" style="color: #60a5fa; border-color: rgba(59,130,246,0.45);">🛡️ BLUE TEAM DFIR · PYTHON · WIRESHARK · PCAP · NIST SP 800-61</span>
+                            <h3 class="project-title">Blue Team DFIR &amp; Malware Triage Pipeline</h3>
+                            <p class="project-desc">
+                                Automated Blue Team incident response pipeline extracting indicators of compromise (IOCs), inspecting PCAP streams, and scoring suspicious artifacts.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Engineered Python IOC enrichment tool querying VirusTotal &amp; AbuseIPDB threat intelligence APIs.</li>
+                                <li>Performed deep packet forensics (PCAP) in Wireshark to isolate C2 beaconing and DNS tunneling.</li>
+                                <li>Standardized containment and eradication runbooks adhering strictly to NIST SP 800-61 frameworks.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Blue Team DFIR</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Python</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Wireshark PCAP</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">VirusTotal API</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">NIST SP 800-61</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="incident-response" style="background:none; border:none; padding:0; color:#60a5fa;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Blue Team Detection Engineering & SOAR Automation -->
+                    <div class="project-card" style="border-color: rgba(59,130,246,0.4);">
+                        <div class="project-top">
+                            <span class="project-badge" style="color: #60a5fa; border-color: rgba(59,130,246,0.45);">🛡️ BLUE TEAM · SIGMA / YARA · WAZUH EDR · SOAR · MITRE D3FEND</span>
+                            <h3 class="project-title">Blue Team Detection Engineering &amp; SOAR</h3>
+                            <p class="project-desc">
+                                Detection-as-code and SOAR playbook engine translating Sigma &amp; YARA rules into active SIEM defenses with automated host isolation.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Authored Sigma behavioral rules &amp; YARA signatures aligned with MITRE D3FEND countermeasures.</li>
+                                <li>Integrated Wazuh EDR endpoint alerts with Python SOAR webhooks to quarantine compromised hosts.</li>
+                                <li>Cut false-positive alert fatigue by 62% via threshold tuning and contextual threat-intel scoring.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Detection Engineering</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Sigma &amp; YARA</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">Wazuh EDR</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">SOAR Playbooks</span>
+                                <span class="project-tag" style="border-color:rgba(59,130,246,0.28); color:#93c5fd;">MITRE D3FEND</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="blue-team-soar" style="background:none; border:none; padding:0; color:#60a5fa;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: User Behavioural Analysis -->
+                    <div class="project-card">
+                        <div class="project-top">
+                            <span class="project-badge">PYTHON | DATA CLEANING | VISUALIZATION</span>
+                            <h3 class="project-title">User Behavioural Analysis</h3>
+                            <p class="project-desc">
+                                Comprehensive user interaction analytics to uncover behavioral patterns, churn factors, and engagement drop-offs.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Collected and analyzed user interaction data to identify behavioural patterns and trends.</li>
+                                <li>Applied data cleaning and transformation techniques to prepare datasets for analysis.</li>
+                                <li>Generated visual reports, correlation heatmaps, and actionable insights using data analysis tools.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag">Python</span>
+                                <span class="project-tag">Pandas</span>
+                                <span class="project-tag">Data Cleaning</span>
+                                <span class="project-tag">Seaborn</span>
+                                <span class="project-tag">MySQL</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="user-behavior" style="background:none; border:none; padding:0;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: AI Resume Analyzer + Job Matcher -->
+                    <div class="project-card">
+                        <div class="project-top">
+                            <span class="project-badge">NLP | ML | GENAI | PYTHON</span>
+                            <h3 class="project-title">AI Resume Analyzer + Job Matcher</h3>
+                            <p class="project-desc">
+                                Intelligent system solving guidance gaps for students by parsing resumes and matching candidates via ML algorithms.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Built an AI-powered tool to address resume guidance gaps for students using NLP parsing.</li>
+                                <li>Scored resumes for quality, suggested improvements, and matched candidates to job descriptions.</li>
+                                <li>Implemented an ATS simulation feature and a job recommendation engine as advanced capabilities.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag">NLP</span>
+                                <span class="project-tag">Machine Learning</span>
+                                <span class="project-tag">GenAI</span>
+                                <span class="project-tag">Python</span>
+                                <span class="project-tag">ATS Simulation</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="resume-analyzer" style="background:none; border:none; padding:0;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Chatbot Development using NLTK -->
+                    <div class="project-card">
+                        <div class="project-top">
+                            <span class="project-badge">PYTHON | NLTK | NLP</span>
+                            <h3 class="project-title">Chatbot Development using NLTK</h3>
+                            <p class="project-desc">
+                                Natural language understanding bot built completely from scratch for automated classification and conversation.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Built an NLP-based chatbot from scratch using Python and NLTK for intent classification.</li>
+                                <li>Engineered custom text tokenization, lemmatization, and response generation algorithms.</li>
+                                <li>Demonstrated applied knowledge of data processing and machine learning concepts.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag">Python</span>
+                                <span class="project-tag">NLTK</span>
+                                <span class="project-tag">NLP</span>
+                                <span class="project-tag">Text Processing</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="chatbot" style="background:none; border:none; padding:0;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Android App Development -->
+                    <div class="project-card">
+                        <div class="project-top">
+                            <span class="project-badge">ANDROID | MOBILE ARCHITECTURE</span>
+                            <h3 class="project-title">Android App Development</h3>
+                            <p class="project-desc">
+                                Functional mobile application showcasing full-cycle engineering, responsive views, and seamless user interaction.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Designed and developed a functional Android application demonstrating end-to-end execution.</li>
+                                <li>Implemented robust data handling, UI layouts, and lifecycle state management.</li>
+                                <li>Demonstrated comprehensive software development lifecycle capabilities.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag">Android Studio</span>
+                                <span class="project-tag">Java</span>
+                                <span class="project-tag">UI/UX</span>
+                                <span class="project-tag">Mobile App</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="android-app" style="background:none; border:none; padding:0;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5: Hotel Management & Booking Intelligence System (HMS) -->
+                    <div class="project-card">
+                        <div class="project-top">
+                            <span class="project-badge" style="color:#38bdf8; border-color:rgba(56,189,248,0.4);">🏨 PYTHON · MYSQL · HOSPITALITY PMS · REVPAR &amp; ADR · STREAMLIT</span>
+                            <h3 class="project-title">Hotel Management &amp; Booking Intelligence System (HMS)</h3>
+                            <p class="project-desc">
+                                Enterprise property management system (PMS) and revenue analytics engine automating room reservations, guest lifecycle billing, and real-time RevPAR/ADR occupancy analytics.
+                            </p>
+                            <ul class="project-bullets">
+                                <li>Architected relational database schema in MySQL modeling rooms, guests, bookings, and financial audit logs.</li>
+                                <li>Programmed automated hospitality KPI computation engine calculating Occupancy Rate, Average Daily Rate (ADR), and RevPAR.</li>
+                                <li>Engineered dynamic forecasting and cancellation risk module to optimize room yield and front-desk operational workflow.</li>
+                            </ul>
+                        </div>
+                        <div class="project-bottom">
+                            <div class="project-tags">
+                                <span class="project-tag">Hospitality PMS</span>
+                                <span class="project-tag">RevPAR &amp; ADR</span>
+                                <span class="project-tag">Python</span>
+                                <span class="project-tag">MySQL</span>
+                                <span class="project-tag">Hospitality Analytics</span>
+                                <span class="project-tag">Streamlit</span>
+                            </div>
+                            <div class="project-card-footer">
+                                <button class="view-project-btn project-action-link" data-project="hotel-management" style="background:none; border:none; padding:0; color:#38bdf8;">
+                                    VIEW ARCHITECTURE ▹
+                                </button>
+                                <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="project-action-link">
+                                    GITHUB REPO ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             SECTION 3: TECHNICAL SKILLS MATRIX
+             ==================================================================== -->
+        <section id="skills" class="content-section skills-section" data-index="3">
+            <div class="skills-wrapper">
+                <div class="section-tag">
+                    <span>03 // PROFICIENCY MATRIX</span>
+                </div>
+                <h2 class="section-title">Technical Skills & Tooling</h2>
+                <p style="color: var(--text-secondary);">
+                    Specialized technologies applied to extract, clean, analyze, and present high-conviction metrics.
+                </p>
+
+                <div class="skills-grid">
+
+                    <!-- Category 1: Data & Analytics Tools -->
+                    <div class="skill-category-card">
+                        <div class="skill-cat-title">
+                            <span>📊 Data & Analytics Tools</span>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Advanced Excel (VLOOKUP, Pivot)</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 95%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Power BI Dashboards</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>SQL (MySQL / Queries)</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 92%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Tableau Visualization</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Hospitality Operations &amp; PMS Analytics</span>
+                                <span>93%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 93%;"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Category 2: Programming & Scripting -->
+                    <div class="skill-category-card">
+                        <div class="skill-cat-title">
+                            <span>💻 Programming & Scripting</span>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Python (Pandas, NumPy)</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>NLTK (Text & NLP)</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>HTML5 / CSS3</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 88%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Git & GitHub Workflows</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 88%;"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Category 3: AI & Machine Learning -->
+                    <div class="skill-category-card">
+                        <div class="skill-cat-title">
+                            <span>🤖 AI / ML & Competencies</span>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>ML Fundamentals</span>
+                                <span>82%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 82%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>GenAI-Based Analytics Tools</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Data Cleaning & Transformation</span>
+                                <span>94%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 94%;"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Statistical Analysis & Reporting</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 90%;"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Category 4: Blue Team SOC & Cyber Defense -->
+                    <div class="skill-category-card" style="border-color: rgba(59,130,246,0.4);">
+                        <div class="skill-cat-title">
+                            <span style="color: #60a5fa;">🛡️ Blue Team SOC &amp; Cyber Defense</span>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Blue Team SIEM (Splunk, Elastic, Wazuh)</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 92%; background: linear-gradient(90deg, #2563eb, #38bdf8);"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Detection Engineering (Sigma, YARA, MITRE)</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 90%; background: linear-gradient(90deg, #2563eb, #38bdf8);"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>Network Forensics (Wireshark PCAPs)</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 88%; background: linear-gradient(90deg, #2563eb, #38bdf8);"></div></div>
+                        </div>
+                        <div class="skill-bar-item">
+                            <div class="skill-bar-meta">
+                                <span>DFIR, EDR &amp; SOAR Triage (NIST SP 800-61)</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" style="width: 88%; background: linear-gradient(90deg, #2563eb, #38bdf8);"></div></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             SECTION 4: EDUCATION & CERTIFICATIONS TIMELINE
+             ==================================================================== -->
+        <section id="timeline" class="content-section timeline-section" data-index="4">
+            <div class="glass-panel timeline-card">
+                <div class="section-tag">
+                    <span>04 // CAREER TRAJECTORY</span>
+                </div>
+                <h2 class="section-title">Education & Certifications</h2>
+
+                <div class="timeline-list">
+
+                    <!-- Blue Team SOC Labs -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #3b82f6; box-shadow: 0 0 12px #3b82f6;"></div>
+                        <div class="timeline-year" style="color: #60a5fa;">BLUE TEAM SOC LABS</div>
+                        <div class="timeline-degree">Blue Team SOC Operations &amp; Detection Engineering</div>
+                        <div class="timeline-inst">SIEM (Splunk, Wazuh) · Sigma · MITRE ATT&amp;CK &amp; D3FEND · EDR</div>
+                        <div class="timeline-score" style="color: #93c5fd; border-color: rgba(59,130,246,0.45);">BLUE TEAM DEFENSIVE READY</div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-year">DEC 2025 – FEB 2026</div>
+                        <div class="timeline-degree">Full Stack Data Science Internship (2-month)</div>
+                        <div class="timeline-inst">DataTeach.ai</div>
+                        <div class="timeline-score">PRACTICAL INDUSTRY APPLICATION</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-year">AUG 2025 – FEB 2026</div>
+                        <div class="timeline-degree">Full Stack Data Science Course (6-month)</div>
+                        <div class="timeline-inst">DataTeach.ai</div>
+                        <div class="timeline-score">COMPREHENSIVE DATA SCIENCE CERTIFICATION</div>
+                    </div>
+
+                    <!-- University -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-year">2022 – 2025</div>
+                        <div class="timeline-degree">Bachelor of Hotel Management (B.H.M.) Program</div>
+                        <div class="timeline-inst">Southern Hotel Management, Andhra University</div>
+                        <div class="timeline-score">CGPA: 8.56 / 10 · DISTINCTION</div>
+                    </div>
+
+                    <!-- Intermediate -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-degree">Intermediate (MPC - Math, Physics, Chemistry)</div>
+                        <div class="timeline-inst">Sri Chaitanya Jr College, Bhimavaram</div>
+                        <div class="timeline-score">SCORE: 792 MARKS</div>
+                    </div>
+
+                    <!-- School -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-year">2018</div>
+                        <div class="timeline-degree">Secondary School Certificate (10th Grade)</div>
+                        <div class="timeline-inst">Narayana School</div>
+                        <div class="timeline-score">GPA: 8.2 / 10</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             SECTION 5: CONTACT & HOLOGRAPHIC UPLINK
+             ==================================================================== -->
+        <section id="contact" class="content-section contact-section" data-index="5">
+            <div class="glass-panel contact-card">
+                <div class="section-tag">
+                    <span>05 // HOLOGRAPHIC UPLINK</span>
+                </div>
+                <h2 class="section-title">Initiate Communication</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Seeking opportunities in Data Analytics, Business Intelligence, and Data Science. Let's discuss how data can accelerate your growth.
+                </p>
+
+                <div class="contact-grid">
+                    <!-- Left: Direct Info Links -->
+                    <div class="contact-info-col">
+                        <a href="mailto:gopalgopireddy9@gmail.com" class="contact-item">
+                            <span class="contact-icon">✉</span>
+                            <div class="contact-meta">
+                                <span class="contact-label">EMAIL ADDRESS</span>
+                                <span class="contact-val">gopalgopireddy9@gmail.com</span>
+                            </div>
+                        </a>
+
+                        <a href="tel:+919391865480" class="contact-item">
+                            <span class="contact-icon">📞</span>
+                            <div class="contact-meta">
+                                <span class="contact-label">DIRECT PHONE / WHATSAPP</span>
+                                <span class="contact-val">+91 93918 65480</span>
+                            </div>
+                        </a>
+
+                        <a href="https://github.com/gopalgopireddy9-png" target="_blank" class="contact-item">
+                            <span class="contact-icon">🐙</span>
+                            <div class="contact-meta">
+                                <span class="contact-label">GITHUB PROFILE</span>
+                                <span class="contact-val">github.com/gopalgopireddy9-png</span>
+                            </div>
+                        </a>
+
+                        <a href="https://linkedin.com" target="_blank" class="contact-item">
+                            <span class="contact-icon">🔗</span>
+                            <div class="contact-meta">
+                                <span class="contact-label">LINKEDIN NETWORK</span>
+                                <span class="contact-val">Gopal Gopireddy | LinkedIn</span>
+                            </div>
+                        </a>
+
+                        <div class="contact-item" style="cursor: default;">
+                            <span class="contact-icon">📍</span>
+                            <div class="contact-meta">
+                                <span class="contact-label">LOCATION</span>
+                                <span class="contact-val">Bhimavaram, Andhra Pradesh, India</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Quick Message Dispatcher -->
+                    <div class="contact-form-col">
+                        <form id="contact-form">
+                            <div style="margin-bottom: 0.8rem;">
+                                <label style="display:block; font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); margin-bottom:0.25rem;">YOUR NAME / ORGANIZATION</label>
+                                <input type="text" class="form-input" placeholder="e.g. Talent Acquisition / Team Lead" required>
+                            </div>
+                            <div style="margin-bottom: 0.8rem;">
+                                <label style="display:block; font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); margin-bottom:0.25rem;">YOUR CONTACT EMAIL</label>
+                                <input type="email" class="form-input" placeholder="recruiter@company.com" required>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display:block; font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); margin-bottom:0.25rem;">PROJECT OR ROLE MESSAGE</label>
+                                <textarea class="form-textarea" placeholder="Hi Gopal, we are looking for a Data Analyst proficient in Power BI & SQL..." required></textarea>
+                            </div>
+                            <button type="submit" class="hud-btn hud-btn-primary" style="width: 100%; justify-content: center;">
+                                DISPATCH HOLOGRAPHIC MESSAGE ▹
+                            </button>
+                            <div id="form-status-msg" style="display:none; color:var(--accent-emerald); font-family:var(--font-mono); font-size:0.78rem; text-align:center; margin-top:0.6rem;"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 2rem; padding-top: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+                        DESIGNED WITH 3D CINEMATIC WEBGL & THREE.JS
+                    </span>
+                    <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+                        <a href="index.html" download="index.html" class="hud-btn" style="font-size: 0.75rem; border-color: var(--accent-cyan); color: var(--accent-cyan);" title="Download index.html file">
+                            Download Index HTML ⬇
+                        </a>
+                        <a href="portfolio_bundle.zip" download="portfolio_bundle.zip" class="hud-btn hud-btn-primary" style="font-size: 0.75rem;" title="Download Full Portfolio Project ZIP">
+                            DOWNLOAD FULL ZIP 📦
+                        </a>
+                        <a href="mailto:gopalgopireddy9@gmail.com" class="hud-btn" style="font-size: 0.75rem;">
+                            DOWNLOAD RESUME (.PDF) ⬇
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PROJECT DEEP-DIVE MODAL -->
+    <div id="project-modal" class="modal-overlay">
+        <div class="modal-window">
+            <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+            <h3 id="modal-project-title" class="section-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></h3>
+            <div id="modal-project-body"></div>
+        </div>
     </div>
-  </section>
 
-</main>
+    <!-- GOOGLE FLOW AI (VEO) STUDIO MODAL -->
+    <div id="flow-modal" class="modal-overlay">
+        <div class="modal-window" style="max-width: 780px;">
+            <button id="flow-modal-close-btn" class="modal-close-btn">&times;</button>
+            
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.5rem;">
+                <span style="background:rgba(245,158,11,0.15); border:1px solid #f59e0b; color:#fbbf24; font-family:var(--font-mono); font-size:0.75rem; padding:3px 8px; border-radius:4px;">
+                    GOOGLE FLOW // VEO AI STUDIO
+                </span>
+                <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
+                    CINEMATIC VIDEO INTEGRATION
+                </span>
+            </div>
 
+            <h3 class="section-title" style="font-size: 1.6rem; margin-bottom: 0.8rem; color:#ffffff;">
+                Google Flow AI Video Generator
+            </h3>
 
-<!-- ================= MODAL 1: GOOGLE FLOW (VEO AI) STUDIO ================= -->
-<div id="flow-modal" class="modal-overlay">
-  <div class="modal-window">
-    <button class="modal-close" id="flow-modal-close">&times;</button>
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-      <span class="eyebrow" style="margin:0;"><span class="pill" style="border-color:#f59e0b; color:#fbbf24;">GOOGLE FLOW // VEO AI</span></span>
-      <span style="font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--mut);">CINEMATIC 4K VIDEO GENERATION</span>
+            <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.6; margin-bottom:1.2rem;">
+                <strong>Google Flow</strong> is Google’s creative generative studio powered by <strong>Veo</strong> (Google's photorealistic 4K cinematic video model) and <strong>Imagen</strong>. You can generate custom cinematic video clips of a person/analyst in high definition and project them directly inside this 3D portfolio's holographic displays!
+            </p>
+
+            <!-- Actions row -->
+            <div style="display:flex; flex-wrap:wrap; gap:0.8rem; margin-bottom:1.5rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <button id="upload-flow-video-btn" class="hud-btn hud-btn-primary">
+                    📁 LOAD YOUR GOOGLE FLOW VIDEO (.MP4)
+                </button>
+                <button id="stream-demo-video-btn" class="hud-btn" style="border-color:#10b981; color:#34d399;">
+                    ▶ TEST DEMO CINEMATIC STREAM
+                </button>
+                <button id="reset-sql-stream-btn" class="hud-btn" style="border-color:#64748b; color:#94a3b8;">
+                    ↺ RESET TO LIVE SQL
+                </button>
+            </div>
+
+            <h4 style="font-family:var(--font-heading); font-size:1.1rem; color:var(--accent-cyan); margin-bottom:0.8rem;">
+                🎯 Ready-to-Use Google Flow / Veo Prompts for Gopal:
+            </h4>
+
+            <!-- Prompt Card 1 -->
+            <div style="background:rgba(6,11,24,0.8); border:1px solid rgba(0,242,254,0.25); border-radius:6px; padding:1rem; margin-bottom:1rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                    <strong style="font-size:0.85rem; color:#ffffff; font-family:var(--font-mono);">SCENE 1: THE DATA COMMAND CENTER (HERO SHOT)</strong>
+                    <button class="copy-prompt-btn hud-btn" data-target="flow-p1" style="font-size:0.7rem; padding:3px 8px;">COPY PROMPT 📋</button>
+                </div>
+                <div id="flow-p1" style="font-family:var(--font-mono); font-size:0.75rem; color:#94a3b8; line-height:1.5;">
+                    Cinematic 4K 24fps shot. A young, professional South Asian male data analyst in a sharp navy tech blazer with subtle glowing seams, sitting at a curved futuristic holographic glass desk. Glowing cyan Power BI charts, SQL queries, and glowing data network nodes float around him. The camera performs a slow, smooth push-in dolly shot. Moody cinematic teal and amber lighting, soft anamorphic lens flare, photorealistic, 8k resolution, award-winning cinematography.
+                </div>
+            </div>
+
+            <!-- Prompt Card 2 -->
+            <div style="background:rgba(6,11,24,0.8); border:1px solid rgba(147,51,234,0.25); border-radius:6px; padding:1rem; margin-bottom:1rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                    <strong style="font-size:0.85rem; color:#ffffff; font-family:var(--font-mono);">SCENE 2: INTERACTIVE AI RESUME & PREDICTIVE MODELING</strong>
+                    <button class="copy-prompt-btn hud-btn" data-target="flow-p2" style="font-size:0.7rem; padding:3px 8px;">COPY PROMPT 📋</button>
+                </div>
+                <div id="flow-p2" style="font-family:var(--font-mono); font-size:0.75rem; color:#94a3b8; line-height:1.5;">
+                    Cinematic medium close-up, 4K resolution. The data analyst reaches out with his hands, interacting with floating 3D neon data clusters and neural network connections in mid-air. His face reflects glowing teal and violet light. Gentle depth of field, high-end commercial tech aesthetic, smooth 60fps slow-motion motion blur.
+                </div>
+            </div>
+
+            <!-- Prompt Card 3 -->
+            <div style="background:rgba(6,11,24,0.8); border:1px solid rgba(16,185,129,0.25); border-radius:6px; padding:1rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                    <strong style="font-size:0.85rem; color:#ffffff; font-family:var(--font-mono);">SCENE 3: EXECUTIVE BUSINESS INTELLIGENCE PRESENTATION</strong>
+                    <button class="copy-prompt-btn hud-btn" data-target="flow-p3" style="font-size:0.7rem; padding:3px 8px;">COPY PROMPT 📋</button>
+                </div>
+                <div id="flow-p3" style="font-family:var(--font-mono); font-size:0.75rem; color:#94a3b8; line-height:1.5;">
+                    Cinematic wide orbiting camera tracking shot. The analyst stands proudly next to a massive wall-sized transparent OLED screen showing high-growth business retention metrics and financial predictive models. Warm sunset rim light streaming through panoramic corporate glass windows. Hyperrealistic, photorealistic textures, clean cinematic color grading.
+                </div>
+            </div>
+
+            <div style="margin-top:1.2rem; text-align:right;">
+                <a href="https://labs.google" target="_blank" class="hud-btn" style="border-color:#f59e0b; color:#fbbf24;">
+                    OPEN GOOGLE LABS / FLOW ↗
+                </a>
+            </div>
+        </div>
     </div>
-    <h3 style="font-size:24px; font-weight:800; color:#fff; margin-bottom:12px;">Google Flow AI Cinematic Director</h3>
-    <p style="font-size:14px; color:var(--mut); line-height:1.6; margin-bottom:18px;">
-      <strong>Google Flow</strong> is Google’s creative generative studio powered by <strong>Veo</strong> (Google's state-of-the-art 4K cinematic video foundation model) and <strong>Imagen</strong>. 
-      The photorealistic video reel of Gopal in this portfolio was synthesized to depict the analyst operating an ergonomic cyber command deck with data and SOC telemetry.
-    </p>
 
-    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--line);">
-      <button id="modal-stream-btn" class="btn cyan" style="font-size:12px; padding:8px 16px;">
-        ▶ STREAM VIDEO TO 3D HOLOGRAM
-      </button>
-      <button id="modal-sql-btn" class="btn" style="font-size:12px; padding:8px 16px;">
-        ↺ RESET TO LIVE SOC / SQL TELEMETRY
-      </button>
-      <label class="btn" style="font-size:12px; padding:8px 16px; cursor:pointer;">
-        📁 LOAD CUSTOM MP4
-        <input type="file" id="custom-vid-input" accept="video/mp4" style="display:none;">
-      </label>
-    </div>
+    <!-- SCRIPTS -->
+    <!-- Three.js r128 CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- GLTFLoader for custom 3D model avatars -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <!-- Custom Portfolio Engines -->
+    <script src="js/audio.js"></script>
+    <script src="js/scene.js"></script>
+    <script src="js/main.js"></script>
 
-    <h4 style="font-size:14px; letter-spacing:.12em; color:var(--tl); margin-bottom:12px;">🎯 READY-TO-USE GOOGLE FLOW / VEO PROMPTS:</h4>
-
-    <!-- Prompt 1 -->
-    <div style="background:rgba(5,9,18,0.8); border:1px solid rgba(45,226,230,0.25); border-radius:10px; padding:14px; margin-bottom:12px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-        <strong style="font-size:12px; color:#fff; font-family:'JetBrains Mono',monospace;">SCENE 1: THE DATA &amp; SOC COMMAND CENTER (HERO SHOT)</strong>
-        <button class="copy-btn btn" data-target="p1-txt" style="padding:4px 10px; font-size:10px;">COPY PROMPT 📋</button>
-      </div>
-      <div id="p1-txt" style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--mut); line-height:1.6;">
-        Cinematic 4K 24fps shot. A young, professional South Asian male data and SOC analyst in a sharp navy tech blazer with subtle glowing seams, sitting at a curved futuristic holographic glass desk. Glowing cyan Power BI charts, live red-and-teal SIEM threat alerts, and glowing network nodes float around him. The camera performs a slow, smooth push-in dolly shot. Moody cinematic teal and amber lighting, soft anamorphic lens flare, photorealistic, 8k resolution, award-winning cinematography.
-      </div>
-    </div>
-
-    <!-- Prompt 2 -->
-    <div style="background:rgba(5,9,18,0.8); border:1px solid rgba(239,68,68,0.25); border-radius:10px; padding:14px; margin-bottom:12px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-        <strong style="font-size:12px; color:#fff; font-family:'JetBrains Mono',monospace;">SCENE 2: CYBERSECURITY SOC THREAT HUNTING DECK</strong>
-        <button class="copy-btn btn" data-target="p2-soc-txt" style="padding:4px 10px; font-size:10px;">COPY PROMPT 📋</button>
-      </div>
-      <div id="p2-soc-txt" style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--mut); line-height:1.6;">
-        Cinematic medium close-up, 4K resolution. The SOC analyst monitors live global cyber threat vectors, isolating suspicious brute force logs and packet capture streams on floating transparent screens. Crimson threat indicators turn to safe cyan as defensive containment rules trigger. Reflection of neon security telemetry in his smart glasses, high-end tech thriller aesthetic, smooth slow motion.
-      </div>
-    </div>
-
-    <!-- Prompt 3 -->
-    <div style="background:rgba(5,9,18,0.8); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:14px; margin-bottom:12px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-        <strong style="font-size:12px; color:#fff; font-family:'JetBrains Mono',monospace;">SCENE 3: INTERACTIVE AI RESUME &amp; PREDICTIVE MODELING</strong>
-        <button class="copy-btn btn" data-target="p2-txt" style="padding:4px 10px; font-size:10px;">COPY PROMPT 📋</button>
-      </div>
-      <div id="p2-txt" style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--mut); line-height:1.6;">
-        Cinematic medium close-up, 4K resolution. The data analyst reaches out with his hands, interacting with floating 3D neon data clusters and neural network connections in mid-air. His face reflects glowing teal and violet light. Gentle depth of field, high-end commercial tech aesthetic, smooth 60fps slow-motion motion blur.
-      </div>
-    </div>
-
-    <!-- Prompt 4 -->
-    <div style="background:rgba(5,9,18,0.8); border:1px solid rgba(16,185,129,0.25); border-radius:10px; padding:14px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-        <strong style="font-size:12px; color:#fff; font-family:'JetBrains Mono',monospace;">SCENE 4: EXECUTIVE BUSINESS INTELLIGENCE PRESENTATION</strong>
-        <button class="copy-btn btn" data-target="p3-txt" style="padding:4px 10px; font-size:10px;">COPY PROMPT 📋</button>
-      </div>
-      <div id="p3-txt" style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--mut); line-height:1.6;">
-        Cinematic wide orbiting camera tracking shot. The analyst stands proudly next to a massive wall-sized transparent OLED screen showing high-growth business retention metrics and financial predictive models. Warm sunset rim light streaming through panoramic corporate glass windows. Hyperrealistic, photorealistic textures, clean cinematic color grading.
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ================= MODAL 2: PROJECT ARCHITECTURE ================= -->
-<div id="proj-modal" class="modal-overlay">
-  <div class="modal-window">
-    <button class="modal-close" id="proj-modal-close">&times;</button>
-    <div id="proj-modal-content"></div>
-  </div>
-</div>
-
-
-<!-- ================= THREE.JS & SCRIPTS ================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
-  // 1. Intro Splash auto-dismiss
-  var introEl = document.getElementById('intro');
-  var introTimer = setTimeout(function(){ if(introEl) introEl.classList.add('out'); }, 4200);
-  if (introEl) {
-    introEl.addEventListener('click', function(){
-      clearTimeout(introTimer);
-      introEl.classList.add('out');
-      playTone(440, 0.15, 'sine');
-      tryPlayVideo();
-    });
-  }
-
-  // 2. Scroll-triggered reveal animations
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting) e.target.classList.add('in');
-    });
-  }, {threshold: 0.15});
-  document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
-
-  // 3. UI Elements
-  var secs = [].slice.call(document.querySelectorAll('section'));
-  var chEl = document.getElementById('ch');
-  var tcEl = document.getElementById('tc');
-  var pg = document.getElementById('prog');
-  var heroVid = document.getElementById('hero-flow-video');
-  var vidPlayBtn = document.getElementById('vid-play-btn');
-  var vidSoundBtn = document.getElementById('vid-sound-btn');
-  var vidCinemaBtn = document.getElementById('vid-cinema-btn');
-  var heroFocusBtn = document.getElementById('hero-focus-btn');
-  var vidPlayOverlay = document.getElementById('vid-play-overlay');
-  var vidStatusText = document.getElementById('vid-status-text');
-  var vidContainer = document.getElementById('portal-vid-container');
-  var tourBtn = document.getElementById('tour-btn');
-  var orbitBtn = document.getElementById('orbit-btn');
-  var soundBtn = document.getElementById('sound-btn');
-  var soundStatus = document.getElementById('sound-status');
-  var subHud = document.getElementById('subtitle-hud');
-  var flowModal = document.getElementById('flow-modal');
-  var flowModalBtn = document.getElementById('flow-modal-btn');
-  var flowModalClose = document.getElementById('flow-modal-close');
-  var projModal = document.getElementById('proj-modal');
-  var projModalContent = document.getElementById('proj-modal-content');
-  var projModalClose = document.getElementById('proj-modal-close');
-
-  // Video State Manager
-  function updateVideoState(isPlaying) {
-    if (vidPlayBtn) {
-      vidPlayBtn.textContent = isPlaying ? '⏸ PAUSE' : '▶ PLAY';
-    }
-    if (vidPlayOverlay) {
-      if (isPlaying) {
-        vidPlayOverlay.classList.add('hidden');
-      } else {
-        vidPlayOverlay.classList.remove('hidden');
-      }
-    }
-    if (vidStatusText) {
-      vidStatusText.textContent = isPlaying ? 'PLAYING (4K REEL)' : 'PAUSED (CLICK TO PLAY)';
-      vidStatusText.style.color = isPlaying ? 'var(--gr)' : 'var(--or)';
-    }
-  }
-
-  function tryPlayVideo() {
-    if (!heroVid) return;
-    heroVid.muted = true;
-    heroVid.playsInline = true;
-    var p = heroVid.play();
-    if (p !== undefined) {
-      p.then(function(){
-        updateVideoState(true);
-      }).catch(function(err){
-        console.log("Auto-playback waiting for user gesture:", err);
-        updateVideoState(false);
-      });
-    }
-  }
-
-  // 4. Procedural Web Audio Engine (Ambience + Laser Blips)
-  var audioCtx = null;
-  var isAudioMuted = false;
-  var ambientOsc = null, ambientGain = null;
-
-  function initAudio() {
-    if (audioCtx) return;
-    try {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AC();
-      ambientGain = audioCtx.createGain();
-      ambientGain.gain.setValueAtTime(isAudioMuted ? 0 : 0.04, audioCtx.currentTime);
-      ambientGain.connect(audioCtx.destination);
-
-      ambientOsc = audioCtx.createOscillator();
-      ambientOsc.type = 'sawtooth';
-      ambientOsc.frequency.setValueAtTime(55, audioCtx.currentTime); // A1 bass drone
-
-      var filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(120, audioCtx.currentTime);
-
-      ambientOsc.connect(filter);
-      filter.connect(ambientGain);
-      ambientOsc.start();
-    } catch(e) {
-      console.warn("AudioContext not supported:", e);
-    }
-  }
-
-  function playTone(freq, duration, type) {
-    if (isAudioMuted) return;
-    initAudio();
-    if (!audioCtx) return;
-    try {
-      var osc = audioCtx.createOscillator();
-      var g = audioCtx.createGain();
-      osc.type = type || 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      g.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-      osc.connect(g);
-      g.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + duration);
-    } catch(e){}
-  }
-
-  if (soundBtn) {
-    soundBtn.addEventListener('click', function(){
-      initAudio();
-      isAudioMuted = !isAudioMuted;
-      if (ambientGain) {
-        ambientGain.gain.setValueAtTime(isAudioMuted ? 0 : 0.04, audioCtx.currentTime);
-      }
-      soundStatus.textContent = isAudioMuted ? 'AUDIO: OFF' : 'AUDIO: ON';
-      soundBtn.style.borderColor = isAudioMuted ? 'var(--line)' : 'var(--tl)';
-      if (!isAudioMuted) playTone(587, 0.1, 'sine');
-    });
-  }
-
-  // 5. Video Controls & Event Hooks
-  if (heroVid) {
-    heroVid.addEventListener('play', function(){ updateVideoState(true); });
-    heroVid.addEventListener('pause', function(){ updateVideoState(false); });
-    heroVid.addEventListener('playing', function(){ updateVideoState(true); });
-    heroVid.addEventListener('error', function(e){
-      console.warn("Video element status:", e);
-      if (vidStatusText) {
-        vidStatusText.textContent = 'LOCAL FILE READY (CLICK TO PLAY)';
-        vidStatusText.style.color = 'var(--or)';
-      }
-    });
-
-    if (vidPlayBtn) {
-      vidPlayBtn.addEventListener('click', function(e){
-        e.stopPropagation();
-        if (heroVid.paused) {
-          tryPlayVideo();
-        } else {
-          heroVid.pause();
-        }
-        playTone(660, 0.08);
-      });
-    }
-
-    if (vidPlayOverlay) {
-      vidPlayOverlay.addEventListener('click', function(e){
-        e.stopPropagation();
-        tryPlayVideo();
-        playTone(660, 0.08);
-      });
-    }
-
-    if (vidContainer) {
-      vidContainer.addEventListener('click', function(e){
-        if (e.target !== vidPlayOverlay && !e.target.closest('#vid-play-overlay')) {
-          if (heroVid.paused) {
-            tryPlayVideo();
-          } else {
-            heroVid.pause();
-          }
-          playTone(660, 0.08);
-        }
-      });
-    }
-
-    if (vidSoundBtn) {
-      vidSoundBtn.addEventListener('click', function(e){
-        e.stopPropagation();
-        heroVid.muted = !heroVid.muted;
-        vidSoundBtn.textContent = heroVid.muted ? '🔇 UNMUTE' : '🔊 MUTE';
-        vidSoundBtn.classList.toggle('active', !heroVid.muted);
-        playTone(740, 0.08);
-      });
-    }
-
-    if (vidCinemaBtn) {
-      vidCinemaBtn.addEventListener('click', function(e){
-        e.stopPropagation();
-        if (heroVid.requestFullscreen) {
-          heroVid.requestFullscreen();
-        } else if (heroVid.webkitRequestFullscreen) {
-          heroVid.webkitRequestFullscreen();
-        }
-        playTone(880, 0.1);
-      });
-    }
-
-    // Auto-attempt playback across lifecycle
-    tryPlayVideo();
-    window.addEventListener('load', tryPlayVideo);
-    document.addEventListener('click', function(){
-      if (heroVid && heroVid.paused) {
-        tryPlayVideo();
-      }
-    }, { once: false });
-  }
-
-  // 6. Three.js 3D WebGL World
-  if (typeof THREE === 'undefined') return;
-  var T = THREE;
-  var canvasEl = document.getElementById('c');
-  var r = new T.WebGLRenderer({canvas: canvasEl, antialias: true, powerPreference: 'high-performance'});
-  r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  r.setClearColor(0x05080e);
-
-  var s = new T.Scene();
-  s.fog = new T.FogExp2(0x05080e, 0.045);
-  var cam = new T.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 120);
-
-  var X = window.innerWidth < 800 ? 0 : 3.2;
-  var add = T.AdditiveBlending;
-
-  function M(c, rg, mt) {
-    return new T.MeshStandardMaterial({color: c, roughness: rg == null ? 0.7 : rg, metalness: mt || 0});
-  }
-  function mesh(g, m, x, y, z) {
-    var o = new T.Mesh(g, m);
-    o.position.set(x || 0, y || 0, z || 0);
-    return o;
-  }
-
-  // Lighting
-  s.add(new T.AmbientLight(0x3a4a66, 0.85));
-  var rim = new T.DirectionalLight(0x2de2e6, 1.8);
-  rim.position.set(-6, 5, -6);
-  s.add(rim);
-
-  var keyLight = new T.PointLight(0xff8a3d, 2.4, 25);
-  keyLight.position.set(5, 3.5, 4);
-  s.add(keyLight);
-
-  var fillLight = new T.PointLight(0x2de2e6, 1.6, 18);
-  fillLight.position.set(-4, 2.5, 3);
-  s.add(fillLight);
-
-  // Reflective Floor & Neon Grid
-  var floor = mesh(new T.PlaneGeometry(90, 90), M(0x070b12, 0.25, 0.6));
-  floor.rotation.x = -Math.PI / 2;
-  s.add(floor);
-
-  var grid = new T.GridHelper(90, 90, 0x2de2e6, 0x16324a);
-  grid.position.y = 0.01;
-  grid.material.transparent = true;
-  grid.material.opacity = 0.28;
-  s.add(grid);
-
-  // Seated 3D Character (Gopireddy Gopal)
-  var me = new T.Group();
-  s.add(me);
-  var skin = M(0xb97c58, 0.6), shirt = M(0x192b4a, 0.8), pants = M(0x10131a, 0.8), hair = M(0x120e0c, 0.9);
-
-  // Ergonomic Command Chair
-  var chair = new T.Group();
-  me.add(chair);
-  chair.add(mesh(new T.BoxGeometry(0.7, 0.08, 0.7), M(0x161a22, 0.5, 0.4), 0, 0.5, 0));
-  chair.add(mesh(new T.BoxGeometry(0.7, 0.85, 0.08), M(0x161a22, 0.5, 0.4), 0, 0.95, 0.38));
-  chair.add(mesh(new T.CylinderGeometry(0.04, 0.04, 0.45, 10), M(0x333a48, 0.3, 0.8), 0, 0.25, 0));
-  chair.add(mesh(new T.CylinderGeometry(0.35, 0.35, 0.04, 24), M(0x333a48, 0.3, 0.8), 0, 0.03, 0));
-
-  // Torso
-  var torso = mesh(new T.CylinderGeometry(0.3, 0.25, 0.78, 20), shirt, 0, 1.02, 0);
-  me.add(torso);
-  [-1, 1].forEach(function(k){
-    me.add(mesh(new T.SphereGeometry(0.15, 16, 12), shirt, k * 0.33, 1.34, 0));
-  });
-
-  // Neck & Head
-  me.add(mesh(new T.CylinderGeometry(0.07, 0.08, 0.14, 12), skin, 0, 1.48, 0));
-  var head = new T.Group();
-  head.position.set(0, 1.67, 0);
-  me.add(head);
-  head.add(mesh(new T.SphereGeometry(0.2, 28, 20), skin));
-
-  // Hair
-  var cap = mesh(new T.SphereGeometry(0.215, 28, 16, 0, Math.PI * 2, 0, Math.PI * 0.58), hair);
-  cap.rotation.x = 0.38;
-  head.add(cap);
-
-  // Eyes & Smart AR Visor
-  [-1, 1].forEach(function(k){
-    head.add(mesh(new T.SphereGeometry(0.018, 8, 8), M(0x0a0a0a, 0.3), k * 0.07, 0.02, -0.185));
-  });
-  head.add(mesh(new T.SphereGeometry(0.026, 8, 8), skin, 0, -0.03, -0.2));
-
-  // AR Visor Mesh (Glowing Cyan with Red SOC Alert Beacon)
-  var visor = mesh(new T.BoxGeometry(0.34, 0.08, 0.06), new T.MeshBasicMaterial({color: 0x2de2e6, transparent: true, opacity: 0.65}), 0, 0.03, -0.19);
-  head.add(visor);
-
-  // Arms & Dynamic Typing Motion
-  var arms = [];
-  [-1, 1].forEach(function(k){
-    var ua = new T.Group();
-    ua.position.set(k * 0.34, 1.34, 0);
-    ua.rotation.x = 0.55;
-    me.add(ua);
-    ua.add(mesh(new T.CylinderGeometry(0.065, 0.06, 0.34, 12), shirt, 0, -0.17, 0));
-    var fa = new T.Group();
-    fa.position.y = -0.34;
-    fa.rotation.x = 0.9;
-    ua.add(fa);
-    fa.add(mesh(new T.CylinderGeometry(0.055, 0.045, 0.32, 12), skin, 0, -0.16, 0));
-    fa.add(mesh(new T.SphereGeometry(0.05, 10, 8), skin, 0, -0.34, 0));
-    arms.push(fa);
-  });
-
-  // Legs & Shoes
-  [-1, 1].forEach(function(k){
-    var th = mesh(new T.CylinderGeometry(0.09, 0.08, 0.55, 12), pants, k * 0.14, 0.57, -0.27);
-    th.rotation.x = Math.PI / 2;
-    me.add(th);
-    me.add(mesh(new T.CylinderGeometry(0.075, 0.065, 0.55, 12), pants, k * 0.14, 0.28, -0.55));
-    me.add(mesh(new T.BoxGeometry(0.13, 0.07, 0.28), M(0x0c0c0e, 0.5), k * 0.14, 0.04, -0.64));
-  });
-
-  // Command Desk & Glowing Laptop
-  me.add(mesh(new T.BoxGeometry(2.5, 0.06, 1.1), M(0x1b2230, 0.35, 0.4), 0, 0.8, -0.95));
-  [-1, 1].forEach(function(k){
-    me.add(mesh(new T.BoxGeometry(0.06, 0.8, 0.95), M(0x11151d, 0.5, 0.5), k * 1.15, 0.4, -0.95));
-  });
-  me.add(mesh(new T.BoxGeometry(0.56, 0.02, 0.38), M(0x2a3140, 0.3, 0.8), 0, 0.84, -0.8));
-  var scr = new T.Group();
-  scr.position.set(0, 0.85, -0.98);
-  scr.rotation.x = -0.35;
-  me.add(scr);
-  scr.add(mesh(new T.BoxGeometry(0.56, 0.36, 0.015), M(0x2a3140, 0.3, 0.8), 0, 0.18, 0));
-  scr.add(mesh(new T.PlaneGeometry(0.5, 0.3), new T.MeshBasicMaterial({color: 0x2de2e6}), 0, 0.18, 0.009));
-
-  // Holographic 3D Floating Screens
-  var panels = [];
-  var centerHoloMesh = null;
-  var videoTexture = null;
-  var isVideoHoloActive = false;
-
-  function createPanel(w, h, x, y, z, ry, draw, isCenter) {
-    var cv = document.createElement('canvas');
-    cv.width = 512;
-    cv.height = Math.round(512 * h / w);
-    var tx = new T.CanvasTexture(cv);
-    var mat = new T.MeshBasicMaterial({map: tx, transparent: true, side: T.DoubleSide, depthWrite: false});
-    var m = mesh(new T.PlaneGeometry(w, h), mat, x, y, z);
-    m.rotation.y = ry;
-    m.userData = {cv: cv, tx: tx, draw: draw, base: y, ph: Math.random() * 6};
-    me.add(m);
-    panels.push(m);
-    if (isCenter) centerHoloMesh = m;
-  }
-
-  function frameHolo(c, W, H, title, sub, isSoc) {
-    c.fillStyle = isSoc ? 'rgba(16,8,12,0.92)' : 'rgba(6,12,22,0.88)';
-    c.fillRect(0, 0, W, H);
-    c.strokeStyle = isSoc ? 'rgba(239,68,68,0.75)' : 'rgba(45,226,230,0.65)';
-    c.lineWidth = 2;
-    c.strokeRect(1, 1, W - 2, H - 2);
-    c.fillStyle = isSoc ? '#f87171' : '#2de2e6';
-    c.font = 'bold 15px "JetBrains Mono",monospace';
-    c.fillText(title, 20, 30);
-    c.fillStyle = '#9aa6b8';
-    c.font = '11px "JetBrains Mono",monospace';
-    c.fillText(sub || 'LIVE TELEMETRY', W - 140, 30);
-  }
-
-  // 1. Center Screen: Google Flow Video / SOC SIEM & SQL Live Stream
-  var socTelemetryLines = [
-    "[SOC ACTIVE] SIEM Cluster: Splunk / Elastic correlated 42,800 EPS",
-    "SEV-2 ALERT: Suspicious PowerShell (Event ID 4104) flagged on Host-09",
-    "MITRE ATT&CK: T1059.001 Command & Scripting Interpreter detected",
-    "ACTION: Automated containment rule executed. IP 192.168.1.105 quarantined.",
-    "SELECT user, event_id, risk_score FROM siem_alerts WHERE risk > 85",
-    "UPDATE dashboard SET power_bi = 'ACTIVE', soc_defense = 'OPTIMIZED'",
-    "-- Live stream uplink from Google Flow 4K Veo AI model..."
-  ];
-
-  createPanel(2.8, 1.7, 0, 2.05, -2.7, 0, function(c, W, H, t){
-    frameHolo(c, W, H, 'SOC SIEM // THREAT RADAR', 'SEV-2 MONITOR', true);
-    c.fillStyle = '#38bdf8';
-    c.font = '12px "JetBrains Mono",monospace';
-    var lineIdx = Math.floor(t * 1.5) % socTelemetryLines.length;
-    for (var l = 0; l < socTelemetryLines.length; l++) {
-      var rowY = 65 + l * 26;
-      if (l === lineIdx) {
-        c.fillStyle = l === 1 || l === 2 ? '#ef4444' : '#ff8a3d';
-        c.fillText('▶ ' + socTelemetryLines[l], 20, rowY);
-      } else {
-        c.fillStyle = 'rgba(154,166,184,0.7)';
-        c.fillText('  ' + socTelemetryLines[l], 20, rowY);
-      }
-    }
-    // Subtle animated grid line
-    var scanY = (t * 85) % H;
-    c.strokeStyle = 'rgba(239,68,68,0.25)';
-    c.beginPath();
-    c.moveTo(0, scanY);
-    c.lineTo(W, scanY);
-    c.stroke();
-  }, true);
-
-  // 2. Left Screen: Power BI Animated Bar Charts
-  createPanel(2.1, 1.35, -2.3, 1.7, -2.2, 0.55, function(c, W, H, t){
-    frameHolo(c, W, H, 'REVENUE & COHORT LIFT', 'POWER BI', false);
-    for (var i = 0; i < 7; i++) {
-      var v = 0.3 + 0.6 * Math.abs(Math.sin(t * 0.85 + i * 0.95));
-      var bh = (H - 90) * v;
-      c.fillStyle = i % 2 ? '#2de2e6' : '#ff8a3d';
-      c.fillRect(30 + i * 65, H - 35 - bh, 40, bh);
-    }
-  }, false);
-
-  // 3. Right Screen: SOC Threat Defense & ATS Match Gauge
-  createPanel(2.1, 1.35, 2.3, 1.7, -2.2, -0.55, function(c, W, H, t){
-    frameHolo(c, W, H, 'SOC DEFENSE & ATS RADAR', 'THREAT MITIGATION', true);
-    var v = 0.88 + 0.04 * Math.sin(t * 1.2);
-    c.lineWidth = 18;
-    c.strokeStyle = 'rgba(255,255,255,0.08)';
-    c.beginPath();
-    c.arc(W / 2, H / 2 + 15, 60, 0, Math.PI * 2);
-    c.stroke();
-    c.strokeStyle = '#ef4444';
-    c.beginPath();
-    c.arc(W / 2, H / 2 + 15, 60, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * v);
-    c.stroke();
-    c.fillStyle = '#eef1f6';
-    c.font = 'bold 30px "JetBrains Mono",monospace';
-    c.textAlign = 'center';
-    c.fillText(Math.round(v * 100) + '%', W / 2, H / 2 + 26);
-    c.textAlign = 'left';
-  }, false);
-
-  // Hook Google Flow Video onto Central Hologram Screen (with CORS & protocol resilience)
-  function bindVideoToHolo() {
-    if (!heroVid || !centerHoloMesh) return;
-    // On file:// protocol, Chromium strictly blocks WebGL texImage2D from local videos
-    var isHttp = window.location.protocol.startsWith('http');
-    if (!isHttp) {
-      console.log("file:// protocol: displaying animated procedural SOC & SIEM telemetry canvas on 3D hologram screen.");
-      isVideoHoloActive = false;
-      return;
-    }
-    try {
-      if (!videoTexture) {
-        videoTexture = new T.VideoTexture(heroVid);
-        videoTexture.minFilter = T.LinearFilter;
-        videoTexture.magFilter = T.LinearFilter;
-        videoTexture.format = T.RGBAFormat;
-      }
-      centerHoloMesh.material.map = videoTexture;
-      centerHoloMesh.material.needsUpdate = true;
-      isVideoHoloActive = true;
-    } catch(e) {
-      console.warn("Video texture fallback to procedural canvas:", e);
-      isVideoHoloActive = false;
-    }
-  }
-
-  if (heroVid) {
-    heroVid.addEventListener('play', function(){
-      if (window.location.protocol.startsWith('http')) {
-        bindVideoToHolo();
-      }
-    });
-  }
-
-  // Floating Ambient Data Dust Particles
-  var D = 1600, dp = new Float32Array(D * 3);
-  for (var j = 0; j < D; j++) {
-    dp[j * 3] = (Math.random() - 0.5) * 45;
-    dp[j * 3 + 1] = Math.random() * 12;
-    dp[j * 3 + 2] = (Math.random() - 0.5) * 45;
-  }
-  var dg = new T.BufferGeometry();
-  dg.setAttribute('position', new T.BufferAttribute(dp, 3));
-  var dust = new T.Points(dg, new T.PointsMaterial({
-    color: 0x93c5fd, size: 0.04, transparent: true, opacity: 0.7, blending: add, depthWrite: false
-  }));
-  s.add(dust);
-
-  // Camera Scroll Keyframes: Multi-Shot Cinematic Director
-  var K = [
-    [-3.0, 2.3, 6.4, 0, 1.5, -1.4],  // 0: Overview / Hero
-    [4.6, 2.1, -0.6, 0, 1.45, 0.2],  // 1: About 3/4 side profile
-    [-0.4, 3.2, 8.8, 0, 1.4, -1.4],  // 2: Projects crane overview
-    [1.8, 2.3, 1.9, 0, 2.0, -2.6],   // 3: Skills close look at holograms
-    [-4.2, 1.9, -1.0, 0, 1.45, 0.0], // 4: Education angle
-    [0.0, 1.7, 3.8, 0, 1.45, -0.8]   // 5: Contact eye-level focus
-  ];
-
-  var mx = 0, my = 0, scrollProg = 0, smoothProg = 0;
-  var isOrbitMode = false, isTourMode = false, tourProgress = 0;
-
-  function onResize() {
-    var w = window.innerWidth, h = window.innerHeight;
-    r.setSize(w, h, false);
-    cam.aspect = w / h;
-    cam.updateProjectionMatrix();
-    X = w < 800 ? 0 : 3.2;
-    me.position.x = X;
-  }
-  onResize();
-  window.addEventListener('resize', onResize);
-
-  window.addEventListener('mousemove', function(e){
-    mx = e.clientX / window.innerWidth - 0.5;
-    my = e.clientY / window.innerHeight - 0.5;
-  });
-
-  window.addEventListener('scroll', function(){
-    var maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-    scrollProg = window.scrollY / maxScroll;
-  });
-
-  function easeInOut(f) {
-    return f * f * (3 - 2 * f);
-  }
-
-  // 1-Click Autonomous Movie Tour
-  var tourCaptions = [
-    {at: 0.0, title: "ACT I // COMMAND CORE", desc: "Gopireddy Gopal seated at cyber-command deck monitoring live data & SOC feeds."},
-    {at: 0.2, title: "ACT II // THE ANALYST", desc: "From Andhra University rigor to advanced data engineering and cyber defense."},
-    {at: 0.45, title: "ACT III // PREDICTIVE & DEFENSIVE SYSTEMS", desc: "Behavioral analytics, churn mitigation, SIEM log correlation, and threat containment."},
-    {at: 0.7, title: "ACT IV // GOOGLE FLOW AI", desc: "4K cinematic video synthesis & holographic telemetry projection."},
-    {at: 0.9, title: "ACT V // READY FOR HIRE", desc: "Empowering data-driven decisions and 24/7 SOC security operations."}
-  ];
-
-  if (tourBtn) {
-    tourBtn.addEventListener('click', function(){
-      isTourMode = !isTourMode;
-      tourProgress = 0;
-      tourBtn.innerHTML = isTourMode ? '<span>⏹</span> EXIT TOUR' : '<span>▶</span> MOVIE TOUR';
-      tourBtn.classList.toggle('accent', !isTourMode);
-      subHud.classList.toggle('active', isTourMode);
-      if (isTourMode) initAudio();
-      playTone(520, 0.12);
-    });
-  }
-
-  if (orbitBtn) {
-    orbitBtn.addEventListener('click', function(){
-      isOrbitMode = !isOrbitMode;
-      orbitBtn.classList.toggle('accent', isOrbitMode);
-      orbitBtn.innerHTML = isOrbitMode ? '<span>🎥</span> EXIT 360°' : '<span>🎥</span> 360° ORBIT';
-      playTone(480, 0.12);
-    });
-  }
-
-  if (heroFocusBtn) {
-    heroFocusBtn.addEventListener('click', function(){
-      isOrbitMode = false;
-      isTourMode = false;
-      scrollProg = 0;
-      mx = 0; my = 0;
-      cam.position.set(X, 2.05, -0.2);
-      cam.lookAt(X, 2.05, -2.7);
-      playTone(784, 0.15);
-    });
-  }
-
-  var lastSecIdx = -1;
-
-  function tick(timestamp) {
-    var t = timestamp * 0.001;
-
-    if (isTourMode) {
-      tourProgress += 0.0006;
-      if (tourProgress >= 1) {
-        tourProgress = 0;
-        isTourMode = false;
-        tourBtn.innerHTML = '<span>▶</span> MOVIE TOUR';
-        subHud.classList.remove('active');
-      }
-      smoothProg = tourProgress;
-
-      for (var c = tourCaptions.length - 1; c >= 0; c--) {
-        if (tourProgress >= tourCaptions[c].at) {
-          subHud.querySelector('.sub-title').textContent = tourCaptions[c].title;
-          subHud.querySelector('.sub-desc').textContent = tourCaptions[c].desc;
-          break;
-        }
-      }
-    } else if (isOrbitMode) {
-      var radius = 6.8;
-      var orbitAngle = t * 0.35 + mx * 2;
-      cam.position.set(X + Math.sin(orbitAngle) * radius, 2.2 - my * 2, Math.cos(orbitAngle) * radius);
-      cam.lookAt(X, 1.4, 0);
-    } else {
-      smoothProg += (scrollProg - smoothProg) * 0.06;
-      var totalSegments = K.length - 1;
-      var q = Math.min(0.9999, smoothProg) * totalSegments;
-      var i = Math.floor(q);
-      var f = easeInOut(q - i);
-      var a = K[i], b = K[i + 1];
-
-      function lerpCoord(n) { return a[n] + (b[n] - a[n]) * f; }
-      var isMobile = window.innerWidth < 800;
-
-      cam.position.set(
-        X + lerpCoord(0) + mx * 1.2,
-        lerpCoord(1) - my * 0.6,
-        lerpCoord(2) + (isMobile ? 2.5 : 0)
-      );
-      cam.lookAt(X + lerpCoord(3), lerpCoord(4), lerpCoord(5));
-    }
-
-    head.rotation.y = Math.sin(t * 0.65) * 0.12 + mx * 0.4;
-    head.rotation.x = 0.05 + Math.sin(t * 0.9) * 0.03 - my * 0.3;
-    torso.scale.y = 1 + Math.sin(t * 1.6) * 0.007;
-
-    arms.forEach(function(fa, idx){
-      fa.rotation.x = 0.9 + Math.sin(t * 14 + idx * 1.7) * 0.06;
-    });
-
-    panels.forEach(function(m){
-      m.position.y = m.userData.base + Math.sin(t * 0.8 + m.userData.ph) * 0.035;
-      if (m !== centerHoloMesh || !isVideoHoloActive) {
-        var c2 = m.userData.cv.getContext('2d');
-        m.userData.draw(c2, m.userData.cv.width, m.userData.cv.height, t);
-        m.userData.tx.needsUpdate = true;
-      }
-    });
-
-    dust.rotation.y = t * 0.015;
-    keyLight.intensity = 2.3 + Math.sin(t * 0.8) * 0.25;
-
-    try {
-      r.render(s, cam);
-    } catch(err){
-      if (isVideoHoloActive) {
-        console.warn("WebGL VideoTexture security block detected on file://. Reverting to procedural canvas:", err);
-        isVideoHoloActive = false;
-        if (centerHoloMesh && centerHoloMesh.userData && centerHoloMesh.userData.tx) {
-          centerHoloMesh.material.map = centerHoloMesh.userData.tx;
-          centerHoloMesh.material.needsUpdate = true;
-        }
-      }
-    }
-
-    pg.style.width = (smoothProg * 100) + '%';
-    var mid = window.innerHeight * 0.5;
-    var currentSecIdx = 0;
-    secs.forEach(function(el, idx){
-      if (el.getBoundingClientRect().top < mid) currentSecIdx = idx;
-    });
-
-    if (currentSecIdx !== lastSecIdx) {
-      var chapterName = secs[currentSecIdx].getAttribute('data-ch') || 'OVERVIEW';
-      chEl.textContent = chapterName;
-      document.querySelectorAll('.bar nav a').forEach(function(a, n){
-        a.classList.toggle('active', n === currentSecIdx);
-      });
-      lastSecIdx = currentSecIdx;
-    }
-
-    var totalSecs = Math.floor(smoothProg * 180);
-    var mm = ('0' + Math.floor(totalSecs / 60)).slice(-2);
-    var ss = ('0' + (totalSecs % 60)).slice(-2);
-    var ms = ('0' + Math.floor((timestamp % 1000) / 10)).slice(-2);
-    tcEl.textContent = '00:' + mm + ':' + ss + '.' + ms;
-
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-
-  // 7. Modals
-  if (flowModalBtn && flowModal) {
-    flowModalBtn.addEventListener('click', function(){
-      flowModal.classList.add('active');
-      playTone(520, 0.1);
-    });
-  }
-  if (flowModalClose && flowModal) {
-    flowModalClose.addEventListener('click', function(){
-      flowModal.classList.remove('active');
-    });
-  }
-  if (flowModal) {
-    flowModal.addEventListener('click', function(e){
-      if (e.target === flowModal) flowModal.classList.remove('active');
-    });
-  }
-
-  var customVidInput = document.getElementById('custom-vid-input');
-  if (customVidInput && heroVid) {
-    customVidInput.addEventListener('change', function(e){
-      if (e.target.files && e.target.files[0]) {
-        var fileUrl = URL.createObjectURL(e.target.files[0]);
-        heroVid.src = fileUrl;
-        heroVid.play();
-        bindVideoToHolo();
-        flowModal.classList.remove('active');
-        playTone(660, 0.15);
-      }
-    });
-  }
-
-  var modalStreamBtn = document.getElementById('modal-stream-btn');
-  if (modalStreamBtn) {
-    modalStreamBtn.addEventListener('click', function(){
-      bindVideoToHolo();
-      flowModal.classList.remove('active');
-      playTone(700, 0.12);
-    });
-  }
-
-  var modalSqlBtn = document.getElementById('modal-sql-btn');
-  if (modalSqlBtn && centerHoloMesh) {
-    modalSqlBtn.addEventListener('click', function(){
-      isVideoHoloActive = false;
-      centerHoloMesh.material.map = centerHoloMesh.userData.tx;
-      centerHoloMesh.material.needsUpdate = true;
-      flowModal.classList.remove('active');
-      playTone(400, 0.12);
-    });
-  }
-
-  document.querySelectorAll('.copy-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var targetId = btn.getAttribute('data-target');
-      var el = document.getElementById(targetId);
-      if (el) {
-        navigator.clipboard.writeText(el.innerText).then(function(){
-          btn.textContent = 'COPIED! ✓';
-          setTimeout(function(){ btn.textContent = 'COPY PROMPT 📋'; }, 2500);
-          playTone(800, 0.1);
-        });
-      }
-    });
-  });
-
-  // Project Architecture Deep Dive Data
-  var projectSpecs = {
-    "soc-threat-hunting": {
-      title: "SOC Threat Hunting & SIEM Log Analysis Lab",
-      badge: "SIEM · SPLUNK · ELASTIC · MITRE ATT&CK · SYSMON",
-      bullets: [
-        "Constructed an enterprise-grade SIEM detection lab collecting Windows Event Logs & Sysmon.",
-        "Correlated multi-stage attack indicators for Event ID 4625 (Failed Logon Brute Force) and Event ID 4672 (Admin Privilege Assigned).",
-        "Mapped detections to MITRE ATT&CK tactics (T1110 Brute Force, T1003 OS Credential Dumping, T1059 Command Execution).",
-        "Synthesized high-fidelity alerts into Splunk dashboards to eliminate false positives and reduce MTTR."
-      ],
-      code: `-- Splunk SPL: High-Volume Brute Force & Lateral Movement Correlation
-index=security sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
-| stats count(eval(EventCode=4625)) as FailedLogins, 
-        count(eval(EventCode=4624)) as SuccessfulLogins, 
-        values(ComputerName) as TargetedHosts 
-        by src_ip, Account_Name
-| where FailedLogins > 8 AND SuccessfulLogins > 0
-| eval mitre_technique = "T1110.001 - Password Spraying & Brute Force"
-| eval severity = case(FailedLogins > 25, "CRITICAL", FailedLogins > 10, "HIGH", true(), "MEDIUM")
-| sort - FailedLogins`
-    },
-    "incident-response": {
-      title: "Automated Incident Response & Malware Triage Pipeline",
-      badge: "PYTHON · WIRESHARK · PCAP ANALYSIS · VIRUSTOTAL API · NIST SP 800-61",
-      bullets: [
-        "Engineered an automated Python triage tool parsing raw suspicious process hashes and network artifacts.",
-        "Integrated VirusTotal and AbuseIPDB API endpoints for instant reputation lookup and score aggregation.",
-        "Conducted packet-level forensic analysis in Wireshark identifying C2 beaconing rhythms and DNS exfiltration.",
-        "Authored standardized Incident Response playbooks following NIST SP 800-61 Rev. 2 containment steps."
-      ],
-      code: `# Python Automated Artifact & IOC Triage Script
-import requests, hashlib
-
-def analyze_artifact(file_path, vt_api_key):
-    # Compute SHA-256 Hash
-    with open(file_path, "rb") as f:
-        sha256 = hashlib.sha256(f.read()).hexdigest()
-    
-    # Query VirusTotal API v3
-    url = f"https://www.virustotal.com/api/v3/files/{sha256}"
-    headers = {"x-apikey": vt_api_key}
-    res = requests.get(url, headers=headers)
-    
-    if res.status_code == 200:
-        stats = res.json()['data']['attributes']['last_analysis_stats']
-        malicious = stats.get('malicious', 0)
-        triage_status = "QUARANTINE_REQUIRED" if malicious > 3 else "CLEAN"
-        return {"sha256": sha256, "malicious_engines": malicious, "action": triage_status}
-    return {"error": "Artifact hash not cataloged"}`
-    },
-    "user-behavior": {
-      title: "User Behavioural Analysis",
-      badge: "PYTHON · DATA CLEANING · PANDAS · MYSQL · SEABORN",
-      bullets: [
-        "Ingested over 150,000+ session records across multi-platform touchpoints.",
-        "Engineered robust data cleaning pipeline handling missing telemetry and outliers via Pandas.",
-        "Segmented users into behavior cohorts: High Engagement, Dormant, and High-Churn-Risk.",
-        "Produced interactive correlation heatmaps and churn mitigation dashboard."
-      ],
-      code: `-- Cohort Retention & Churn Risk Segmentation\nSELECT user_id,\n       DATEDIFF(NOW(), last_active) AS days_inactive,\n       ROUND(total_session_minutes / total_sessions, 2) AS avg_duration,\n       CASE \n           WHEN DATEDIFF(NOW(), last_active) > 30 THEN 'HIGH_RISK'\n           WHEN total_sessions < 3 THEN 'ONBOARDING_STALLED'\n           ELSE 'HEALTHY'\n       END AS retention_status\nFROM user_interaction_metrics\nWHERE cohort_date >= '2025-01-01';`
-    },
-    "resume-analyzer": {
-      title: "AI Resume Analyzer + Job Matcher",
-      badge: "NLP · MACHINE LEARNING · GENAI · NLTK · PYTHON",
-      bullets: [
-        "Engineered custom text tokenization, lemmatization, and stop-word filtering using NLTK.",
-        "Calculated ATS compatibility score utilizing TF-IDF Vectorization and Cosine Similarity.",
-        "Simulated enterprise applicant tracking system (ATS) filters with instant feedback.",
-        "Integrated job vacancy ranking engine matching candidate skills to open job descriptions."
-      ],
-      code: `# TF-IDF Cosine Similarity Job Match Engine\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.metrics.pairwise import cosine_similarity\n\ndef calculate_ats_score(resume_text, job_desc):\n    tfidf = TfidfVectorizer(stop_words='english', ngram_range=(1, 2))\n    matrix = tfidf.fit_transform([resume_text, job_desc])\n    similarity = cosine_similarity(matrix[0:1], matrix[1:2])[0][0]\n    return round(similarity * 100, 2)`
-    },
-    "chatbot": {
-      title: "Chatbot Development using NLTK",
-      badge: "PYTHON · NLTK · NLP · INTENT CLASSIFICATION",
-      bullets: [
-        "Designed intent hierarchy with custom JSON training patterns and contextual tags.",
-        "Implemented bag-of-words text vectorization and feedforward classification.",
-        "Engineered fallback handling for out-of-domain queries.",
-        "Applied machine learning classification concepts with zero black-box dependencies."
-      ],
-      code: `# Bag-of-Words Intent Vectorizer\nimport nltk\nfrom nltk.stem.lancaster import LancasterStemmer\nstemmer = LancasterStemmer()\n\ndef bow(sentence, words):\n    s_words = [stemmer.stem(w.lower()) for w in nltk.word_tokenize(sentence)]\n    bag = [1 if w in s_words else 0 for w in words]\n    return np.array(bag)`
-    },
-    "android-app": {
-      title: "Android Application Development",
-      badge: "ANDROID STUDIO · JAVA · XML · MOBILE UI",
-      bullets: [
-        "Architected clean mobile application with intuitive navigation flow and responsive layouts.",
-        "Implemented local SQLite database for persistent state and caching.",
-        "Showcased complete software development lifecycle execution and error handling."
-      ],
-      code: `// Mobile Lifecycle & Background Worker\npublic class AnalyticsSyncWorker extends Worker {\n    @NonNull\n    @Override\n    public Result doWork() {\n        try {\n            syncLocalDataToCloud();\n            return Result.success();\n        } catch (Exception e) {\n            return Result.retry();\n        }\n    }\n}`
-    },
-    "resumeiq": {
-      title: "ResumeIQ India",
-      badge: "WEB PLATFORM · APIS · RECRUITMENT TECH",
-      bullets: [
-        "Built centralized career platform connecting Indian students with verified job listings.",
-        "Embedded live ATS scoring tool and dynamic resume builder.",
-        "Integrated third-party job board APIs and real-time alerts."
-      ],
-      code: `// RESTful API Endpoint for Live ATS Scoring\napp.post('/api/score-resume', async (req, res) => {\n  const { resumeText, jobKeywords } = req.body;\n  const score = computeATSScore(resumeText, jobKeywords);\n  res.json({ matchRate: score.percentage, missingSkills: score.gaps });\n});`
-    },
-    "weblytics": {
-      title: "Weblytics Agency & ANSHI Batters",
-      badge: "VENTURE · WEB DESIGN · CONVERSION ANALYTICS",
-      bullets: [
-        "Founded agency delivering conversion-optimized web development and analytics.",
-        "Designed and launched ANSHI Batters commercial portal for homemade batter business.",
-        "Instrumented real-time funnel tracking and user behavioral heatmaps."
-      ],
-      code: `// Funnel Conversion Tracker Event\nfunction trackConversion(stepName, metadata) {\n  window.dataLayer = window.dataLayer || [];\n  window.dataLayer.push({\n    event: 'funnel_step',\n    step: stepName,\n    timestamp: new Date().toISOString(),\n    ...metadata\n  });\n}`
-    }
-  };
-
-  document.querySelectorAll('.proj-modal-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var key = btn.getAttribute('data-proj');
-      var p = projectSpecs[key];
-      if (p && projModal && projModalContent) {
-        var isSoc = key === 'soc-threat-hunting' || key === 'incident-response';
-        var html = '<div style="margin-bottom:10px;"><span class="eyebrow" style="margin:0;"><span class="pill' + (isSoc ? ' soc' : '') + '">' + p.badge + '</span></span></div>';
-        html += '<h3 style="font-size:24px; font-weight:800; color:#fff; margin-bottom:14px;">' + p.title + '</h3>';
-        html += '<ul style="list-style:none; padding:0; margin-bottom:20px;">';
-        p.bullets.forEach(function(b){
-          html += '<li style="position:relative; padding-left:18px; margin-bottom:8px; font-size:14px; color:var(--mut); line-height:1.6;"><span style="position:absolute; left:0; color:' + (isSoc ? 'var(--rd)' : 'var(--tl)') + ';">▹</span>' + b + '</li>';
-        });
-        html += '</ul>';
-        html += '<div style="background:#050914; border:1px solid ' + (isSoc ? 'rgba(239,68,68,0.35)' : 'rgba(45,226,230,0.3)') + '; border-radius:8px; padding:16px; font-family:\'JetBrains Mono\',monospace; font-size:11px; color:' + (isSoc ? '#fca5a5' : '#38bdf8') + '; overflow-x:auto;">';
-        html += '<div style="color:#64748b; margin-bottom:8px; text-transform:uppercase;">// Source Architecture Snippet</div>';
-        html += '<pre style="margin:0; line-height:1.6;"><code>' + p.code.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code></pre>';
-        html += '</div>';
-        projModalContent.innerHTML = html;
-        projModal.classList.add('active');
-        playTone(600, 0.1);
-      }
-    });
-  });
-
-  if (projModalClose && projModal) {
-    projModalClose.addEventListener('click', function(){
-      projModal.classList.remove('active');
-    });
-  }
-  if (projModal) {
-    projModal.addEventListener('click', function(e){
-      if (e.target === projModal) projModal.classList.remove('active');
-    });
-  }
-
-  // 8. Contact Form Dispatch Uplink
-  var msgForm = document.getElementById('msg-form');
-  var frmBtn = document.getElementById('frm-submit-btn');
-  var frmFeedback = document.getElementById('frm-feedback');
-  if (msgForm) {
-    msgForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      frmBtn.textContent = 'TRANSMITTING SIGNAL...';
-      frmBtn.disabled = true;
-      playTone(520, 0.2);
-
-      setTimeout(function(){
-        frmBtn.textContent = 'SIGNAL DISPATCHED ✓';
-        frmFeedback.style.display = 'block';
-        frmFeedback.textContent = 'Transmission received! Gopal will reach back to you shortly.';
-        playTone(880, 0.25);
-        msgForm.reset();
-
-        setTimeout(function(){
-          frmBtn.textContent = 'DISPATCH SIGNAL ▹';
-          frmBtn.disabled = false;
-          frmFeedback.style.display = 'none';
-        }, 5000);
-      }, 1200);
-    });
-  }
-
-})();
-</script>
 </body>
 </html>
